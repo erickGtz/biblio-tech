@@ -1,0 +1,353 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+.navbar {
+    background: #0a1b5a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* Para posicionar el ícono de búsqueda */
+    max-width: 500px;
+    flex: 1;
+    margin: 0 20px;
+}
+
+/* 1. Estilos comunes para unificar input, select y botón */
+.search-bar input[type="text"],
+.search-bar select,
+.search-bar .btn {
+    border: none;
+    margin: 0;
+    outline: none;
+    height: 40px;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+/* 2. Estilos para el campo de texto (input) */
+.search-bar input[type="text"] {
+    flex: 1;
+    /* Ocupa el espacio restante */
+    padding: 10px;
+    padding-left: 35px;
+    /* Espacio para el ícono */
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+/* 3. Estilos para el menú desplegable (select) */
+.search-bar select {
+    padding: 10px;
+    border-left: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 0;
+    /* Sin esquinas redondeadas */
+}
+
+/* 4. Estilos para el botón de búsqueda */
+.search-bar .btn {
+    background: #6A85D4;
+    color: #fff;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.search-bar .btn:hover {
+    background: #5872c3;
+}
+
+/* 5. Estilos para el ícono de búsqueda */
+.search-bar .bi-search {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* Agrega esto al final de tu archivo css/styles.css */
+
+.meta-info {
+    display: flex;
+    justify-content: space-between;
+    /* Alinea los elementos a los extremos */
+    align-items: center;
+    /* Centra los elementos verticalmente */
+    margin-bottom: 1em;
+    /* Espacio inferior */
+}
+
+.author {
+    margin: 0;
+    /* Quita el margen por defecto del párrafo */
+    display: flex;
+    align-items: center;
+}
+
+.author img {
+    margin-right: 8px;
+    /* Espacio entre la foto y el nombre */
+}
+
+.stats {
+    display: flex;
+    gap: 15px;
+    /* Espacio entre "descargas" y "comentarios" */
+    font-size: 0.9em;
+    color: #6c757d;
+    /* Color gris para que no resalte tanto */
+}
+
+.stats span {
+    display: flex;
+    align-items: center;
+}
+
+.stats i {
+    margin-right: 5px;
+    /* Espacio entre el ícono y el texto */
+}
+
+/* --- Estilos para el ícono de búsqueda --- */
+
+/* 1. Convierte al contenedor en un marco de referencia para posicionar elementos */
+.search-bar {
+    position: relative;
+}
+
+/* 2. Posiciona el ícono de forma absoluta DENTRO del contenedor */
+.search-bar .bi-search {
+    position: absolute;
+    left: 12px;
+    /* Distancia desde la izquierda */
+    top: 50%;
+    /* Lo baja a la mitad de la altura del contenedor */
+    transform: translateY(-50%);
+    /* Lo centra verticalmente a la perfección */
+    color: #888;
+    /* Un color gris sutil para el ícono */
+}
+
+/* 3. Agrega espacio a la izquierda del texto para que no se encime con el ícono */
+.search-bar input[type="text"] {
+    padding-left: 35px;
+    /* Ajusta este valor si el ícono es más grande */
+}
+
+.btn {
+    background: #647BC1;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-btn {
+    background: #C1C7C8;
+    color: black;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.upload-btn:hover {
+    background: #C1C7C8;
+}
+
+.profile img {
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.document-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.document-card h2 {
+    margin-bottom: 10px;
+}
+
+.author {
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.author img {
+    border-radius: 50%;
+}
+
+.description {
+    margin-bottom: 15px;
+}
+
+/* --- Nuevos estilos para detalles y etiquetas --- */
+
+.document-details {
+    margin: 25px 0;
+    /* Aumenta el espacio vertical */
+    font-size: 14px;
+    border-top: 1px solid #eee;
+    /* Línea separadora superior */
+    padding-top: 20px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.detail-item i {
+    margin-right: 8px;
+    color: #555;
+    font-size: 16px;
+}
+
+.detail-item strong {
+    margin-right: 8px;
+}
+
+/* Título de "Etiquetas" */
+.labels-title {
+    margin-bottom: 10px;
+}
+
+/* Estilo para la etiqueta de Materia (píldora negra) */
+.subject-tag {
+    background-color: #222;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    /* Crea la forma de píldora */
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Contenedor para las etiquetas de borde */
+.labels-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    /* Espacio entre etiquetas */
+    padding-left: 2px;
+}
+
+/* Estilo para las etiquetas con borde */
+.label-tag {
+    border: 1px solid #aaa;
+    padding: 3px 10px;
+    border-radius: 12px;
+    /* Crea la forma de píldora */
+    color: #333;
+    background-color: transparent;
+    font-size: 13px;
+    transition: all 0.2s ease-in-out;
+}
+
+.label-tag:hover {
+    background-color: #f0f0f0;
+    border-color: #888;
+    cursor: pointer;
+}
+
+.rating {
+    margin: 15px 0;
+}
+
+.stars,
+.user-stars {
+    font-size: 18px;
+    color: gold;
+}
+
+.download-btn {
+    background: #0a1b5a;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comments {
+    margin-top: 20px;
+}
+
+.comments h3 {
+    margin-bottom: 10px;
+}
+
+.comments textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.comments ul {
+    list-style: none;
+}
+
+.comments li {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+    .search-bar {
+        flex: 1 1 100%;
+        margin: 10px 0;
+    }
+}
