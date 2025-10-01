@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background-color: #f5f5f5;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Estilos para Login */
+.left-panel {
+    flex: 1;
+    background-color: #1a1f4d;
+}
+
+.right-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+/* Estilos para Registro */
+.left-panel-register {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #f5f5f5;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.right-panel-register {
+    flex: 1;
+    background-color: #1a1f4d;
+}
+
+.form-container {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.form-container h2 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 28px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: 25px;
+    font-weight: normal;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    color: #333;
+    font-size: 13px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: border-color 0.3s;
+    background-color: #f8f8f8;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #1a1f4d;
+}
+
+.form-group input::placeholder {
+    color: #999;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #1a1f4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #252d6b;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #1a1f4d;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Mensajes de error/éxito */
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.message.error {
+    background-color: #fee;
+    color: #c33;
+    border: 1px solid #fcc;
+}
+
+.message.success {
+    background-color: #efe;
+    color: #3c3;
+    border: 1px solid #cfc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .left-panel,
+    .right-panel-register {
+        display: none;
+    }
+    
+    .right-panel,
+    .left-panel-register {
+        flex: 1;
+    }
+    
+    .form-container {
+        padding: 30px 20px;
+    }
+}
+
+/* Estilos para Dashboard */
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1f4d 0%, #2d3561 100%);
+}
+
+.dashboard-content {
+    background: white;
+    padding: 60px 80px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 600px;
+}
+
+.dashboard-content h1 {
+    color: #1a1f4d;
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.dashboard-message {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.user-info {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.user-info p {
+    color: #333;
+    font-size: 16px;
+    margin: 0;
+}
+
+.user-info span {
+    font-weight: 600;
+    color: #1a1f4d;
+}
+
+.btn-logout {
+    padding: 12px 30px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #c82333;
+}
