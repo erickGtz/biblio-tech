@@ -1,0 +1,639 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+.navbar {
+    background: #0a1b5a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* Para posicionar el ícono de búsqueda */
+    max-width: 500px;
+    flex: 1;
+    margin: 0 20px;
+}
+
+/* 1. Estilos comunes para unificar input, select y botón */
+.search-bar input[type="text"],
+.search-bar select,
+.search-bar .btn {
+    border: none;
+    margin: 0;
+    outline: none;
+    height: 40px;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+/* 2. Estilos para el campo de texto (input) */
+.search-bar input[type="text"] {
+    flex: 1;
+    /* Ocupa el espacio restante */
+    padding: 10px;
+    padding-left: 35px;
+    /* Espacio para el ícono */
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+/* 3. Estilos para el menú desplegable (select) */
+.search-bar select {
+    padding: 10px;
+    border-left: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 0;
+    /* Sin esquinas redondeadas */
+}
+
+/* 4. Estilos para el botón de búsqueda */
+.search-bar .btn {
+    background: #6A85D4;
+    color: #fff;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.search-bar .btn:hover {
+    background: #5872c3;
+}
+
+/* 5. Estilos para el ícono de búsqueda */
+.search-bar .bi-search {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.meta-info {
+    display: flex;
+    justify-content: space-between;
+    /* Alinea los elementos a los extremos */
+    align-items: center;
+    /* Centra los elementos verticalmente */
+    margin-bottom: 1em;
+    /* Espacio inferior */
+}
+
+.author {
+    margin: 0;
+    /* Quita el margen por defecto del párrafo */
+    display: flex;
+    align-items: center;
+}
+
+.author img {
+    margin-right: 8px;
+    /* Espacio entre la foto y el nombre */
+}
+
+.stats {
+    display: flex;
+    gap: 15px;
+    /* Espacio entre "descargas" y "comentarios" */
+    font-size: 0.9em;
+    color: #6c757d;
+    /* Color gris para que no resalte tanto */
+}
+
+.stats span {
+    display: flex;
+    align-items: center;
+}
+
+.stats i {
+    margin-right: 5px;
+    /* Espacio entre el ícono y el texto */
+}
+
+/* 1. Convierte al contenedor en un marco de referencia para posicionar elementos */
+.search-bar {
+    position: relative;
+}
+
+/* 2. Posiciona el ícono de forma absoluta DENTRO del contenedor */
+.search-bar .bi-search {
+    position: absolute;
+    left: 12px;
+    /* Distancia desde la izquierda */
+    top: 50%;
+    /* Lo baja a la mitad de la altura del contenedor */
+    transform: translateY(-50%);
+    /* Lo centra verticalmente a la perfección */
+    color: #888;
+    /* Un color gris sutil para el ícono */
+}
+
+/* 3. Agrega espacio a la izquierda del texto para que no se encime con el ícono */
+.search-bar input[type="text"] {
+    padding-left: 35px;
+}
+
+.btn {
+    background: #647BC1;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-btn {
+    background: #C1C7C8;
+    color: black;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.upload-btn:hover {
+    background: #C1C7C8;
+}
+
+.profile img {
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.document-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.document-card h2 {
+    margin-bottom: 10px;
+}
+
+.author {
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.author img {
+    border-radius: 50%;
+}
+
+.description {
+    margin-bottom: 15px;
+}
+
+/* --- Nuevos estilos para detalles y etiquetas --- */
+
+.document-details {
+    margin: 25px 0;
+    /* Aumenta el espacio vertical */
+    font-size: 14px;
+    border-top: 1px solid #eee;
+    /* Línea separadora superior */
+    padding-top: 20px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.detail-item i {
+    margin-right: 8px;
+    color: #555;
+    font-size: 16px;
+}
+
+.detail-item strong {
+    margin-right: 8px;
+}
+
+/* Título de "Etiquetas" */
+.labels-title {
+    margin-bottom: 10px;
+}
+
+/* Estilo para la etiqueta de Materia (píldora negra) */
+.subject-tag {
+    background-color: #222;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    /* Crea la forma de píldora */
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Contenedor para las etiquetas de borde */
+.labels-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    /* Espacio entre etiquetas */
+    padding-left: 2px;
+}
+
+/* Estilo para las etiquetas con borde */
+.label-tag {
+    border: 1px solid #aaa;
+    padding: 3px 10px;
+    border-radius: 12px;
+    /* Crea la forma de píldora */
+    color: #333;
+    background-color: transparent;
+    font-size: 13px;
+    transition: all 0.2s ease-in-out;
+}
+
+.label-tag:hover {
+    background-color: #f0f0f0;
+    border-color: #888;
+    cursor: pointer;
+}
+
+/* 1. Contenedor principal que alinea todo */
+.actions-container {
+    display: flex;
+    justify-content: space-between;
+    /* Empuja los elementos a los extremos */
+    align-items: center;
+    /* Centra verticalmente */
+    margin: 25px 0;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+/* 2. Contenedor de las dos líneas de puntuación */
+.rating-section {
+    font-size: 14px;
+}
+
+.rating-line {
+    margin-bottom: 8px;
+    /* Espacio entre "Puntuación" y "Tu puntuación" */
+}
+
+.rating-line:last-child {
+    margin-bottom: 0;
+}
+
+/* Título "Puntuación" en negritas */
+.rating-line strong {
+    font-size: 16px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Texto "Tu puntuación" normal */
+.rating-line span {
+    color: #555;
+}
+
+/* --- Estilo para las estrellas con relleno y contorno --- */
+
+/* Contenedor que alinea estrellas y texto */
+.stars,
+.user-stars {
+    display: flex;
+    align-items: center;
+    color: #666;
+    gap: 6px;
+}
+
+/* --- Estilos DEFINITIVOS para Estrellas SVG --- */
+
+/* Contenedor que alinea estrellas y texto */
+.stars,
+.user-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    /* Reducimos el espacio entre estrellas */
+}
+
+/* Estilo base para TODAS las estrellas (solo contorno) */
+.star-svg {
+    width: 20px;
+    /* Tamaño de la estrella */
+    height: 20px;
+    stroke: #333;
+    /* Color del contorno */
+    stroke-width: 1.5px;
+    /* Grosor del contorno */
+    fill: transparent;
+    /* Relleno transparente por defecto */
+}
+
+/* Estilo que se aplica SOLO a las estrellas con la clase "filled" */
+.star-svg.filled {
+    fill: #FFD700;
+    /* Relleno amarillo */
+}
+
+/* Ajuste para el texto de al lado */
+.rating-text {
+    margin-left: 8px;
+    color: #666;
+}
+
+/* Asegurarse de que el contenedor de estrellas siga siendo flex para alinear el texto */
+.stars,
+.user-stars {
+    display: flex;
+    align-items: center;
+    color: #666;
+    /* Color del texto junto a las estrellas */
+    gap: 6px;
+}
+
+/* 4. Nuevo estilo para el botón de descarga */
+.download-btn {
+    background: #222;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.download-btn:hover {
+    background: #444;
+}
+
+/* --- Nuevos Estilos para la Sección de Comentarios --- */
+
+.comments {
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.comments h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Espacio entre el ícono y el texto */
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* Formulario para escribir un nuevo comentario */
+.comment-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* --- Nuevo Diseño para el Área de Texto de Comentarios --- */
+
+.comment-form textarea {
+    flex-grow: 1;
+    /* Ocupa el espacio disponible */
+    border: 1px solid #e0e0e0;
+    /* Borde más sutil que el anterior */
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-family: inherit;
+    /* Usa la misma fuente que el resto de la página */
+    background-color: #f5f5f5;
+    /* Fondo gris claro */
+    resize: vertical;
+    /* Permite al usuario cambiar la altura */
+    transition: all 0.2s ease-in-out;
+    /* Transición suave para el focus */
+    min-height: 42px;
+    /* Altura mínima consistente con el botón */
+}
+
+/* Estilo para cuando el usuario hace clic en el textarea para escribir */
+.comment-form textarea:focus {
+    outline: none;
+    /* Quita el contorno azul por defecto del navegador */
+    border-color: #a0a0a0;
+    /* Borde un poco más oscuro al seleccionar */
+    background-color: #ffffff;
+    /* Fondo blanco mientras se escribe */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+    /* Sombra interior sutil */
+}
+
+.btn-submit-comment {
+    border: none;
+    background-color: #222;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-submit-comment:hover {
+    background-color: #444;
+}
+
+/* Estilos para cada comentario en la lista */
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.comment-author-name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.comment-timestamp {
+    font-size: 12px;
+    color: #777;
+}
+
+.comment-body {
+    font-size: 14px;
+    color: #333;
+    margin: 0 0 12px 0;
+    /* Margen inferior */
+}
+
+/* Botones de "Útil" y "No útil" */
+.comment-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    /* Píldora */
+    padding: 4px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #555;
+    transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* --- Estilos para la Ventana Modal --- */
+
+/* El fondo oscuro que cubre toda la pantalla */
+.modal-overlay {
+    position: fixed;
+    /* Se queda fijo en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Negro con 60% de opacidad */
+    display: none;
+    /* Por defecto está oculto */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    /* Se asegura de que esté por encima de todo */
+}
+
+/* Clase que usaremos con JavaScript para mostrar el modal */
+.modal-overlay.visible {
+    display: flex;
+}
+
+/* La ventana blanca que contiene los detalles del documento */
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 800px;
+    /* Ancho máximo de la ventana */
+    width: 90%;
+    max-height: 90vh;
+    /* Altura máxima para que no ocupe toda la pantalla */
+    overflow-y: auto;
+    /* Permite hacer scroll si el contenido es muy largo */
+    position: relative;
+    /* Necesario para posicionar el botón de cerrar */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* El botón de cerrar (la "X") */
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #888;
+    cursor: pointer;
+}
+
+/* --- Nuevos Estilos para la vista RESPONSIVA de dos filas --- */
+
+@media (max-width: 768px) {
+
+    /* 1. Hacemos que la barra de búsqueda ocupe su propia línea */
+    .search-bar {
+        width: 100%;
+        /* Forzamos a que ocupe todo el ancho */
+        order: 3;
+        /* La enviamos al final del orden visual */
+        margin-top: 10px;
+        /* Añadimos un espacio para separarla de la fila superior */
+    }
+
+    /* 2. Colocamos el logo al inicio de la primera fila */
+    .logo {
+        order: 1;
+    }
+
+    /* 3. Empujamos los botones y la foto al final de la primera fila */
+    .user-actions {
+        order: 2;
+        margin-left: auto;
+        /* Mantenemos el truco para empujarlo a la derecha */
+    }
+
+    /* 4. Reseteamos la justificación del navbar para que el orden funcione bien */
+    .navbar {
+        justify-content: flex-start;
+    }
+}
