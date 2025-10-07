@@ -248,3 +248,118 @@ body {
 .btn-logout:hover {
     background-color: #c82333;
 }
+/* ===================== */
+/* HEADER DE DASHBOARD */
+/* ===================== */
+
+header {
+  background-color: #10194e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-upload {
+  background-color: #4a67d6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.btn-upload:hover {
+  background-color: #5c7df2;
+}
+
+.profile-img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+/* =============== MODAL UPLOAD (UI) =============== */
+.modal-backdrop[aria-hidden="true"] { display: none; }
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(13, 18, 54, 0.55);
+  backdrop-filter: blur(2px);
+  display: grid; place-items: center;
+  padding: 24px; z-index: 1000;
+}
+.modal {
+  width: 100%; max-width: 720px;
+  background: #fff; border-radius: 12px;
+  padding: 24px 26px 22px; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+.modal h2 { font-size: 22px; color: #111936; margin-bottom: 4px; }
+.modal-subtitle { color:#6b7280; font-size:13px; margin-bottom:14px; }
+
+.modal-close {
+  position: absolute; top:10px; right:12px;
+  border: none; background: transparent; font-size: 22px;
+  line-height: 1; cursor: pointer; color:#707aa8;
+}
+.modal-close:hover { color:#1a1f4d; }
+
+.dropzone {
+  display:flex; align-items:center; gap:16px;
+  border:2px dashed #c7cbe9; border-radius:10px;
+  padding:18px; margin:10px 0 16px; cursor:pointer;
+  background:#fafbff;
+  transition: border-color .2s, background .2s;
+}
+.dropzone.is-dragover { border-color:#4a67d6; background:#f0f3ff; }
+.dropzone-icon { font-size:24px; }
+.dropzone-text { line-height:1.2; color:#333; }
+.dropzone small { color:#6b7280; }
+
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+
+.upload-form .form-row { margin-bottom: 12px; }
+.upload-form label { display:block; font-size:13px; color:#333; margin-bottom:6px; font-weight:600; }
+.upload-form input[type="text"],
+.upload-form select,
+.upload-form textarea {
+  width:100%; padding:10px 12px; border:1px solid #d0d0d0; border-radius:8px;
+  background:#f8f8f8; font-size:14px; transition:border-color .2s, background .2s;
+}
+.upload-form textarea { resize: vertical; }
+.upload-form input:focus,
+.upload-form select:focus,
+.upload-form textarea:focus { outline: none; border-color:#1a1f4d; background:#fff; }
+
+.grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+@media (max-width: 640px){ .grid-2 { grid-template-columns: 1fr; } }
+
+.modal-actions {
+  display:flex; justify-content:flex-end; gap:10px; margin-top: 8px;
+}
+.btn-secondary {
+  background:#eef0ff; color:#1a1f4d; border:none; padding:10px 16px;
+  border-radius:8px; font-weight:600; cursor:pointer;
+}
+.btn-secondary:hover { background:#e1e5ff; }
+.btn-primary {
+  background:#1a1f4d; color:#fff; border:none; padding:10px 16px;
+  border-radius:8px; font-weight:600; cursor:pointer;
+}
+.btn-primary:hover { background:#252d6b; }
