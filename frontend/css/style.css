@@ -73,6 +73,73 @@ body {
     font-weight: normal;
 }
 
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* Para posicionar el ícono de búsqueda */
+    max-width: 500px;
+    flex: 1;
+    margin: 0 20px;
+}
+
+/* 1. Estilos comunes para unificar input, select y botón */
+.search-bar input[type="text"],
+.search-bar select,
+.search-bar .btn {
+    border: none;
+    margin: 0;
+    outline: none;
+    height: 40px;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+/* 2. Estilos para el campo de texto (input) */
+.search-bar input[type="text"] {
+    flex: 1;
+    /* Ocupa el espacio restante */
+    padding: 10px;
+    padding-left: 35px;
+    /* Espacio para el ícono */
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+/* 3. Estilos para el menú desplegable (select) */
+.search-bar select {
+    padding: 10px;
+    border-left: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 0;
+    /* Sin esquinas redondeadas */
+}
+
+/* 4. Estilos para el botón de búsqueda */
+.search-bar .btn {
+    background: #6A85D4;
+    color: #fff;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.search-bar .btn:hover {
+    background: #5872c3;
+}
+
+/* 5. Estilos para el ícono de búsqueda */
+.search-bar .bi-search {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
 .form-group {
     margin-bottom: 15px;
 }

@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Usuarios` (
   `escuela` VARCHAR(255) NOT NULL,
   `idGrado_Academico` INT NOT NULL,
   PRIMARY KEY (`idUsuario`),
-  INDEX `fk_Usuarios_Grados_Academicos1_idx` (`idGrado_Academico` ASC) VISIBLE,
+  INDEX `fk_Usuarios_Grados_Academicos1_idx` (`idGrado_Academico` ASC),
   CONSTRAINT `fk_Usuarios_Grados_Academicos1`
     FOREIGN KEY (`idGrado_Academico`)
     REFERENCES `mydb`.`Grados_Academicos` (`idGrados_Academicos`)
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Usuarios_Credenciales` (
   `correo` VARCHAR(100) NOT NULL,
   `contraseña` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`Usuario_idUsuario`),
-  INDEX `fk_Usuario_Credenciales_Usuario_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  INDEX `fk_Usuario_Credenciales_Usuario_idx` (`Usuario_idUsuario` ASC) ,
   CONSTRAINT `fk_Usuario_Credenciales_Usuario`
     FOREIGN KEY (`Usuario_idUsuario`)
     REFERENCES `mydb`.`Usuarios` (`idUsuario`)
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Apuntes` (
   `idUsuario` INT NOT NULL,
   `fecha_subida` DATE NOT NULL,
   PRIMARY KEY (`idApuntes`),
-  INDEX `fk_Apuntes_Usuarios1_idx` (`idUsuario` ASC) VISIBLE,
+  INDEX `fk_Apuntes_Usuarios1_idx` (`idUsuario` ASC) ,
   CONSTRAINT `fk_Apuntes_Usuarios1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `mydb`.`Usuarios` (`idUsuario`)
@@ -104,8 +104,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`comentarios` (
   `idUsuario` INT NOT NULL,
   `idApunte` INT NOT NULL,
   PRIMARY KEY (`idcomentarios`),
-  INDEX `fk_comentarios_Usuarios1_idx` (`idUsuario` ASC) VISIBLE,
-  INDEX `fk_comentarios_Apuntes1_idx` (`idApunte` ASC) VISIBLE,
+  INDEX `fk_comentarios_Usuarios1_idx` (`idUsuario` ASC) ,
+  INDEX `fk_comentarios_Apuntes1_idx` (`idApunte` ASC) ,
   CONSTRAINT `fk_comentarios_Usuarios1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `mydb`.`Usuarios` (`idUsuario`)
@@ -128,8 +128,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Puntuaciones` (
   `idUsuario` INT NOT NULL,
   `idApunte` INT NOT NULL,
   PRIMARY KEY (`idPuntuaciones`),
-  INDEX `fk_Puntuaciones_Usuarios1_idx` (`idUsuario` ASC) VISIBLE,
-  INDEX `fk_Puntuaciones_Apuntes1_idx` (`idApunte` ASC) VISIBLE,
+  INDEX `fk_Puntuaciones_Usuarios1_idx` (`idUsuario` ASC) ,
+  INDEX `fk_Puntuaciones_Apuntes1_idx` (`idApunte` ASC) ,
   CONSTRAINT `fk_Puntuaciones_Usuarios1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `mydb`.`Usuarios` (`idUsuario`)
@@ -151,8 +151,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Apuntes_materias` (
   `idmaterias` INT NOT NULL,
   `idApuntes` INT NOT NULL,
   PRIMARY KEY (`idApuntes_materias`),
-  INDEX `fk_Apuntes_materias_materias1_idx` (`idmaterias` ASC) VISIBLE,
-  INDEX `fk_Apuntes_materias_Apuntes1_idx` (`idApuntes` ASC) VISIBLE,
+  INDEX `fk_Apuntes_materias_materias1_idx` (`idmaterias` ASC) ,
+  INDEX `fk_Apuntes_materias_Apuntes1_idx` (`idApuntes` ASC) ,
   CONSTRAINT `fk_Apuntes_materias_materias1`
     FOREIGN KEY (`idmaterias`)
     REFERENCES `mydb`.`materias` (`idmaterias`)
