@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista General</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-content">
+            <h1>Vista General</h1>
+            <p class="dashboard-message">Aquí estará la vista general de la aplicación</p>
+            <div class="user-info">
+                <p>Bienvenido, <span id="userName">Usuario</span></p>
+            </div>
+            <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <script>
+        // Verificar si hay sesión activa
+        window.onload = function() {
+            // Aquí podrías verificar la sesión con el backend
+            // Por ahora solo mostramos el mensaje
+        }
+
+        function logout() {
+            // Llamar al backend para cerrar sesión
+            fetch('../../back/controllers/authController.php?action=logout', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = 'login.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                window.location.href = 'login.html';
+            });
+        }
+    </script>
+</body>
+</html>
