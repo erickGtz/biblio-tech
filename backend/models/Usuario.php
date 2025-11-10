@@ -80,7 +80,15 @@ class Usuario {
 
         } catch(Exception $e) {
             $this->conn->rollBack();
-            return false;
+
+            // --- LÍNEA DE DEBUGGING ---
+            // Esto nos dirá el error exacto de SQL
+            http_response_code(500); // Sigue siendo un error 500
+            echo json_encode(array(
+                "success" => false,
+                "message" => "Error de SQL al crear: " . $e->getMessage()
+            ));
+            exit();
         }
     }
 

@@ -170,13 +170,14 @@ body {
 }
 
 .upload-btn {
-    background: #C1C7C8;
-    color: black;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.2s;
+  background-color: #4a67d6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
 }
 
 .upload-btn:hover {
