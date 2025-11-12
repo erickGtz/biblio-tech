@@ -3,7 +3,7 @@
 
 class Database {
     private $host = "localhost";
-    private $db_name = "mydb";
+    private $db_name = "biblioteca_colaborativa";
     private $username = "root"; // Cambia según tu configuración
     private $password = "";     // Cambia según tu configuración
     private $conn;
