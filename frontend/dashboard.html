@@ -1,154 +1,153 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vista General • BiblioTech</title>
-  <link rel="stylesheet" href="css/style.css?v=1.1" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="css/styles.css" />  
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vista General • BiblioTech</title>
+    <link rel="stylesheet" href="css/style.css?v=1.1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      /* Estilos mínimos para el modal y mensajes */
+      .modal-backdrop[aria-hidden="true"] {
+        display: none
+      }
 
-    /* Estilos mínimos para el modal y mensajes */
-    .modal-backdrop[aria-hidden="true"] {
-      display: none
-    }
+      .modal-backdrop[aria-hidden="false"] {
+        display: block
+      }
 
-    .modal-backdrop[aria-hidden="false"] {
-      display: block
-    }
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
+      .modal {
+        background: #fff;
+        border-radius: 12px;
+        max-width: 720px;
+        width: 95%;
+        padding: 20px;
+        position: relative
+      }
 
-    .modal {
-      background: #fff;
-      border-radius: 12px;
-      max-width: 720px;
-      width: 95%;
-      padding: 20px;
-      position: relative
-    }
+      .modal-close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        font-size: 22px;
+        background: transparent;
+        border: 0;
+        cursor: pointer
+      }
 
-    .modal-close {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      font-size: 22px;
-      background: transparent;
-      border: 0;
-      cursor: pointer
-    }
+      .dropzone {
+        border: 2px dashed #999;
+        border-radius: 10px;
+        padding: 18px;
+        display: block;
+        cursor: pointer;
+        text-align: center
+      }
 
-    .dropzone {
-      border: 2px dashed #999;
-      border-radius: 10px;
-      padding: 18px;
-      display: block;
-      cursor: pointer;
-      text-align: center
-    }
+      .dropzone.is-dragover {
+        background: #f2f7ff;
+        border-color: #3b82f6
+      }
 
-    .dropzone.is-dragover {
-      background: #f2f7ff;
-      border-color: #3b82f6
-    }
+      .sr-only {
+        position: absolute;
+        left: -10000px
+      }
 
-    .sr-only {
-      position: absolute;
-      left: -10000px
-    }
+      .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 10px 0
+      }
 
-    .form-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin: 10px 0
-    }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px
+      }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px
-    }
+      .btn-primary {
+        background: #3b82f6;
+        color: #fff;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer
+      }
 
-    .btn-primary {
-      background: #3b82f6;
-      color: #fff;
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      cursor: pointer
-    }
+      .btn-secondary {
+        background: #e5e7eb;
+        color: #111;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        cursor: pointer
+      }
 
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #111;
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      cursor: pointer
-    }
+      .alert {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 14px
+      }
 
-    .alert {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 14px
-    }
+      .alert-ok {
+        background: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #10b981
+      }
 
-    .alert-ok {
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1px solid #10b981
-    }
+      .alert-err {
+        background: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #ef4444
+      }
+    </style>
+  </head>
 
-    .alert-err {
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #ef4444
-    }
-  </style>
-</head>
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header>
+      <div class="logo">BiblioTech</div>
+      <div class="search-bar">
+        <input type="text">
+        <i class="bi bi-search"></i>
+        <select id="search-filter">
+          <option value="todo">En todo</option>
+          <option value="materias">Materias</option>
+          <option value="usuarios">Usuarios</option>
+        </select>
+        <button class="btn">Buscar</button>
+      </div>
+      <div class="header-right">
+        <button class="btn-upload" onclick="abrirSubida()">Subir documento</button>
+        <img src="img/avatar.jpg" alt="Usuario" class="profile-img" />
+        <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+      </div>
+    </header>
 
-<body>
-  <!-- ===== HEADER ===== -->
-  <header>
-    <div class="logo">BiblioTech</div>
-    <div class="search-bar">
-      <input type="text">
-      <i class="bi bi-search"></i>
-      <select id="search-filter">
-        <option value="todo">En todo</option>
-        <option value="materias">Materias</option>
-        <option value="usuarios">Usuarios</option>
-      </select>
-      <button class="btn">Buscar</button>
+    <!-- ===== CONTENIDO ===== -->
+
+    <div class="dashboard-container" style="padding:40px">
+      <h2 class="section-title">Documentos publicados</h2>
+      <div class="apuntes-grid" id="apuntesGrid"></div>
+      <div id="uploadMsg" class="alert" style="display:none"></div>
     </div>
-    <div class="header-right">
-      <button class="btn-upload" onclick="abrirSubida()">Subir documento</button>
-      <img src="img/avatar.jpg" alt="Usuario" class="profile-img" />
-      <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
-    </div>
-  </header>
 
-  <!-- ===== CONTENIDO ===== -->
-
-  <div class="dashboard-container" style="padding:40px">
-    <h2 class="section-title">Documentos publicados</h2>
-    <div class="apuntes-grid" id="apuntesGrid"></div>
-    <div id="uploadMsg" class="alert" style="display:none"></div>
-  </div>
-
-  <!-- <div class="dashboard-container">
+    <!-- <div class="dashboard-container">
     <div class="dashboard-content">
       <h1>Vista General</h1>
       <p class="dashboard-message">Aquí estará la vista general de la aplicación</p>
@@ -157,500 +156,516 @@
         <p>Bienvenido, <span id="userName">Usuario</span></p>
       </div>
 
-      
+
 
       <div id="uploadMsg" class="alert" style="display:none"></div>
     </div>
   </div> -->
 
-  <!-- ===== MODAL: SUBIR DOCUMENTO ===== -->
-  <div class="modal-backdrop" id="modalUpload" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadTitle">
-      <button class="modal-close" aria-label="Cerrar" onclick="cerrarSubida()">×</button>
+    <!-- ===== MODAL: SUBIR DOCUMENTO ===== -->
+    <div class="modal-backdrop" id="modalUpload" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadTitle">
+        <button class="modal-close" aria-label="Cerrar" onclick="cerrarSubida()">×</button>
 
-      <h2 id="uploadTitle">Subir documento</h2>
-      <p class="modal-subtitle">Comparte tus apuntes con la comunidad estudiantil</p>
+        <h2 id="uploadTitle">Subir documento</h2>
+        <p class="modal-subtitle">Comparte tus apuntes con la comunidad estudiantil</p>
 
-      <!-- Dropzone -->
-      <label class="dropzone" id="dropzone" for="fileInput">
-        <div class="dropzone-icon" style="font-size:28px">⬆️</div>
-        <div class="dropzone-text">
-          <strong>Arrastra tu archivo aquí</strong> o <u>haz clic para seleccionar</u><br />
-          <small>PDF, DOC, DOCX, PPT, PPTX (máx 25 MB)</small>
-        </div>
-        <input id="fileInput" name="archivo" type="file" class="sr-only" accept=".pdf,.doc,.docx,.ppt,.pptx" />
-      </label>
-
-      <!-- Formulario -->
-      <form id="formUpload" class="upload-form">
-        <div class="form-row">
-          <label for="titulo">Título del documento</label>
-          <input id="titulo" name="titulo" type="text" placeholder="Apuntes de Cálculo Integral – Capítulo 3"
-            required />
-        </div>
-
-        <div class="form-row">
-          <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" name="descripcion" rows="3" placeholder="Descripción detallada del contenido"
-            required></textarea>
-        </div>
-
-        <div class="grid-2">
-          <div class="form-row">
-            <label for="materia">Materia</label>
-            <select id="materia" name="materia" required>
-              <option value="" disabled selected>Seleccionar materia</option>
-              <option>Matemáticas</option>
-              <option>Historia</option>
-              <option>Biología</option>
-              <option>Física</option>
-              <option>Programación</option>
-            </select>
+        <!-- Dropzone -->
+        <label class="dropzone" id="dropzone" for="fileInput">
+          <div class="dropzone-icon" style="font-size:28px">⬆️</div>
+          <div class="dropzone-text">
+            <strong>Arrastra tu archivo aquí</strong> o <u>haz clic para seleccionar</u><br />
+            <small>PDF, DOC, DOCX, PPT, PPTX (máx 25 MB)</small>
           </div>
+          <input id="fileInput" name="archivo" type="file" class="sr-only" accept=".pdf,.doc,.docx,.ppt,.pptx" />
+        </label>
+
+        <!-- Formulario -->
+        <form id="formUpload" class="upload-form">
           <div class="form-row">
-            <label for="semestre">Semestre</label>
-            <select id="semestre" name="semestre" required>
-              <option value="" disabled selected>Seleccionar semestre</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-            </select>
+            <label for="titulo">Título del documento</label>
+            <input id="titulo" name="titulo" type="text" placeholder="Apuntes de Cálculo Integral – Capítulo 3"
+                   required />
           </div>
-        </div>
 
-        <div class="grid-2">
           <div class="form-row">
-            <label for="universidad">Universidad</label>
-            <input id="universidad" name="universidad" type="text" value="BUAP" required />
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" rows="3" placeholder="Descripción detallada del contenido"
+                      required></textarea>
           </div>
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label for="materia">Materia</label>
+              <select id="materia" name="materia" required>
+                <option value="" disabled selected>Seleccionar materia</option>
+                <option>Matemáticas</option>
+                <option>Historia</option>
+                <option>Biología</option>
+                <option>Física</option>
+                <option>Programación</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="semestre">Semestre</label>
+              <select id="semestre" name="semestre" required>
+                <option value="" disabled selected>Seleccionar semestre</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label for="universidad">Universidad</label>
+              <input id="universidad" name="universidad" type="text" value="BUAP" required />
+            </div>
+            <div class="form-row">
+              <label for="carrera">Carrera</label>
+              <input id="carrera" name="carrera" type="text" value="Ingeniería en sistemas" required />
+            </div>
+          </div>
+
           <div class="form-row">
-            <label for="carrera">Carrera</label>
-            <input id="carrera" name="carrera" type="text" value="Ingeniería en sistemas" required />
+            <label for="etiquetas">Etiquetas</label>
+            <input id="etiquetas" name="etiquetas" type="text" placeholder="derivadas, límites, funciones, etc" />
           </div>
-        </div>
 
-        <div class="form-row">
-          <label for="etiquetas">Etiquetas</label>
-          <input id="etiquetas" name="etiquetas" type="text" placeholder="derivadas, límites, funciones, etc" />
-        </div>
+          <div class="modal-actions" style="display:flex;gap:10px;justify-content:flex-end">
+            <button type="button" class="btn-secondary" onclick="cerrarSubida()">Cancelar</button>
+            <button type="submit" class="btn-primary">Subir documento</button>
+          </div>
 
-        <div class="modal-actions" style="display:flex;gap:10px;justify-content:flex-end">
-          <button type="button" class="btn-secondary" onclick="cerrarSubida()">Cancelar</button>
-          <button type="submit" class="btn-primary">Subir documento</button>
-        </div>
-
-        <div id="formMsg" class="alert" style="display:none;"></div>
-      </form>
+          <div id="formMsg" class="alert" style="display:none;"></div>
+        </form>
+      </div>
     </div>
-  </div>
-  <!--MODAL VISUALIZACION DOCUMENTOS-->
-  <div id="document-modal" class="modal-overlay">
-    <div class="modal-content">
-      <button id="modal-close-btn" class="modal-close-btn">&times;</button>
-      <main>
-        <div class="document-card">
-          <h2><i class="bi bi-file-earmark-text-fill"></i>Apuntes de Cálculo Diferencial - Derivadas y
-            Límites
-          </h2>
+    <!--MODAL VISUALIZACION DOCUMENTOS-->
+    <div id="document-modal" class="modal-overlay">
+      <div class="modal-content">
+        <button id="modal-close-btn" class="modal-close-btn">&times;</button>
+        <main>
+          <div class="document-card">
+            <h2><i class="bi bi-file-earmark-text-fill"></i>Apuntes de Cálculo Diferencial - Derivadas y
+              Límites
+            </h2>
 
-          <div class="meta-info">
-            <p class="author">
-              <img src="https://i.pravatar.cc/30" alt="autor">
-              Gabriel López • 27 de Septiembre de 2025, 16:33
+            <div class="meta-info">
+              <p class="author">
+                <img src="https://i.pravatar.cc/30" alt="autor">
+                Gabriel López • 27 de Septiembre de 2025, 16:33
+              </p>
+              <div class="stats">
+                <span><i class="bi bi-download"></i> 5 descargas</span>
+                <span><i class="bi bi-chat-dots"></i> 3 comentarios</span>
+              </div>
+            </div>
+            <p class="description">
+              Resumen completo del capítulo de derivadas incluyendo ejercicios resueltos y teoremas
+              fundamentales
             </p>
-            <div class="stats">
-              <span><i class="bi bi-download"></i> 5 descargas</span>
-              <span><i class="bi bi-chat-dots"></i> 3 comentarios</span>
-            </div>
-          </div>
-          <p class="description">
-            Resumen completo del capítulo de derivadas incluyendo ejercicios resueltos y teoremas
-            fundamentales
-          </p>
 
-          <div class="document-details">
-            <div class="detail-item">
-              <i class="bi bi-book"></i>
-              <strong>Materia:</strong>
-              <span class="subject-tag">Matemáticas</span>
-            </div>
-            <div class="detail-item">
-              <i class="bi bi-mortarboard"></i>
-              <strong>Semestre:</strong>
-              <span>2</span>
-            </div>
-            <div class="detail-item labels-title">
-              <strong>Etiquetas</strong>
-            </div>
-            <div class="labels-container">
-              <span class="label-tag">Derivadas</span>
-              <span class="label-tag">Límites</span>
-              <span class="label-tag">Funciones</span>
-            </div>
-          </div>
-
-          <div class="actions-container">
-            <div class="rating-section">
-              <div class="rating-line">
-                <strong>Puntuación</strong>
-                <div class="stars" id="stars">
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-
-                  <span class="rating-text">4.0 (25 puntuaciones)</span>
-                </div>
+            <div class="document-details">
+              <div class="detail-item">
+                <i class="bi bi-book"></i>
+                <strong>Materia:</strong>
+                <span class="subject-tag">Matemáticas</span>
               </div>
-              <div class="rating-line">
-                <span>Tu puntuación</span>
-                <div class="user-stars" id="user-stars">
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                </div>
+              <div class="detail-item">
+                <i class="bi bi-mortarboard"></i>
+                <strong>Semestre:</strong>
+                <span>2</span>
+              </div>
+              <div class="detail-item labels-title">
+                <strong>Etiquetas</strong>
+              </div>
+              <div class="labels-container">
+                <span class="label-tag">Derivadas</span>
+                <span class="label-tag">Límites</span>
+                <span class="label-tag">Funciones</span>
               </div>
             </div>
-            <button class="download-btn">
-              <i class="bi bi-download"></i> Descargar
-            </button>
-          </div>
 
-          <section class="comments">
-            <h3><i class="bi bi-chat-right-text"></i> Comentarios (3)</h3>
+            <div class="actions-container">
+              <div class="rating-section">
+                <div class="rating-line">
+                  <strong>Puntuación</strong>
+                  <div class="stars" id="stars">
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
 
-            <div class="comment-form">
-              <textarea id="comment-input" placeholder="Escribe tu comentario" rows="1"></textarea>
-              <button id="send-comment" class="btn-submit-comment">Enviar</button>
-            </div>
-
-            <ul id="comment-list">
-              <li class="comment-item">
-                <div class="comment-header">
-                  <img src="https://i.pravatar.cc/30?u=eduardo" alt="Avatar" class="comment-avatar">
-                  <div class="comment-author-info">
-                    <span class="comment-author-name">Eduardo Flores</span>
-                    <span class="comment-timestamp">27 de Septiembre de 2025, 16:33</span>
+                    <span class="rating-text">4.0 (25 puntuaciones)</span>
                   </div>
                 </div>
-                <p class="comment-body">
-                  Excelentes apuntes, me ayudaron para mi exámen
-                </p>
-                <div class="comment-actions">
-                  <button class="action-btn useful"><i class="bi bi-hand-thumbs-up"></i>
-                    Útil</button>
-                  <button class="action-btn not-useful"><i class="bi bi-hand-thumbs-down"></i> No
-                    útil</button>
+                <div class="rating-line">
+                  <span>Tu puntuación</span>
+                  <div class="user-stars" id="user-stars">
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                    <svg class="star-svg filled" viewBox="0 0 24 24">
+                      <path
+                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                    </svg>
+                  </div>
                 </div>
-              </li>
-            </ul>
-          </section>
-        </div>
-      </main>
+              </div>
+              <a href="#" class="download-btn" id="downloadLink" target="_blank">
+                <i class="bi bi-download"></i> Descargar
+              </a>
+            </div>
+
+            <section class="comments">
+              <h3><i class="bi bi-chat-right-text"></i> Comentarios (3)</h3>
+
+              <div class="comment-form">
+                <textarea id="comment-input" placeholder="Escribe tu comentario" rows="1"></textarea>
+                <button id="send-comment" class="btn-submit-comment">Enviar</button>
+              </div>
+
+              <ul id="comment-list">
+                <li class="comment-item">
+                  <div class="comment-header">
+                    <img src="https://i.pravatar.cc/30?u=eduardo" alt="Avatar" class="comment-avatar">
+                    <div class="comment-author-info">
+                      <span class="comment-author-name">Eduardo Flores</span>
+                      <span class="comment-timestamp">27 de Septiembre de 2025, 16:33</span>
+                    </div>
+                  </div>
+                  <p class="comment-body">
+                    Excelentes apuntes, me ayudaron para mi exámen
+                  </p>
+                  <div class="comment-actions">
+                    <button class="action-btn useful"><i class="bi bi-hand-thumbs-up"></i>
+                      Útil</button>
+                    <button class="action-btn not-useful"><i class="bi bi-hand-thumbs-down"></i> No
+                      útil</button>
+                  </div>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </main>
+      </div>
     </div>
-  </div>
-  <!-- ===== SCRIPTS ===== -->
-  <script>
-    // --- RUTAS ---
-    // Desde frontend/dashboard.html la ruta correcta es:
-    const UPLOAD_URL = '../backend/controllers/uploadController.php';
-    const GET_APUNTES_URL = '../backend/controllers/obtainController.php';
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+      // --- RUTAS ---
+      // Desde frontend/dashboard.html la ruta correcta es:
+      const UPLOAD_URL = '../backend/controllers/uploadController.php';
+      const GET_APUNTES_URL = '../backend/controllers/obtainController.php';
 
-    document.addEventListener('DOMContentLoaded', () => {
-      cargarApuntes();
-    });
+      document.addEventListener('DOMContentLoaded', () => {
+        cargarApuntes();
+      });
 
-    async function cargarApuntes() {
-      const grid = document.getElementById('apuntesGrid');
-      grid.innerHTML = '<p style="text-align:center; color:#666;">Cargando apuntes...</p>';
+      async function cargarApuntes() {
+        const grid = document.getElementById('apuntesGrid');
+        grid.innerHTML = '<p style="text-align:center; color:#666;">Cargando apuntes...</p>';
 
-      try {
-        const res = await fetch(GET_APUNTES_URL);
-        const data = await res.json();
+        try {
+          const res = await fetch(GET_APUNTES_URL);
+          const data = await res.json();
 
-        if (!data.success) throw new Error("No se pudieron obtener los apuntes");
+          if (!data.success) throw new Error("No se pudieron obtener los apuntes");
 
-        if (data.data.length === 0) {
-          grid.innerHTML = '<p style="text-align:center; color:#999;">No hay apuntes disponibles.</p>';
-          return;
-        }
+          if (data.data.length === 0) {
+            grid.innerHTML = '<p style="text-align:center; color:#999;">No hay apuntes disponibles.</p>';
+            return;
+          }
 
-        grid.innerHTML = ''; // limpiar
+          grid.innerHTML = ''; // limpiar
 
-        data.data.forEach(apunte => {
-          const card = document.createElement('div');
-          card.classList.add('apunte-card');
-          card.style.opacity = 0; // para animación suave
+          data.data.forEach(apunte => {
+            const card = document.createElement('div');
+            card.classList.add('apunte-card');
+            card.style.opacity = 0; // para animación suave
 
-          card.innerHTML = `
+            card.innerHTML = `
         <h3 class="apunte-titulo">${apunte.titulo || ''}</h3>
         <p class="apunte-fecha">${apunte.fecha_subida || 'Fecha no disponible'}</p>
         <p class="apunte-descripcion">${apunte.descripcion || ''}</p>
         <p class="apunte-etiquetas">${(apunte.etiquetas || 'Sin etiquetas')} • ${(apunte.carrera || '')}</p>
       `;
 
-          grid.appendChild(card);
-          // 🔽 ================== AÑADE ESTO ================== 🔽
-          // Hacemos que la tarjeta sea clicable y llame a la función
-          card.addEventListener('click', (e) => {
-            // Evitamos que el clic en el link "Ver documento" abra el modal
-            if (e.target.classList.contains('btn-ver')) {
-              return;
-            }
-            abrirModalDetalles(apunte); // Le pasamos los datos del apunte
+            grid.appendChild(card);
+            // 🔽 ================== AÑADE ESTO ================== 🔽
+            // Hacemos que la tarjeta sea clicable y llame a la función
+            card.addEventListener('click', (e) => {
+              // Evitamos que el clic en el link "Ver documento" abra el modal
+              if (e.target.classList.contains('btn-ver')) {
+                return;
+              }
+              abrirModalDetalles(apunte); // Le pasamos los datos del apunte
+            });
+            // 🔼 ================== FIN DE LA ADICIÓN ================== 🔼
+            // 🔹 Animación de aparición
+            setTimeout(() => {
+              card.style.transition = 'opacity 0.5s';
+              card.style.opacity = 1;
+            }, 100);
           });
-          // 🔼 ================== FIN DE LA ADICIÓN ================== 🔼
-          // 🔹 Animación de aparición
+        } catch (err) {
+          grid.innerHTML = '<p style="text-align:center; color:red;">Error al cargar los apuntes.</p>';
+          console.error("Error al cargar apuntes:", err);
+        }
+      }
+
+      // ... (Justo después del cierre de la función cargarApuntes() ) ...
+
+      // ========================================================
+      // === LÓGICA PARA EL MODAL DE DETALLES (EL NUEVO CÓDIGO) ===
+      // ========================================================
+
+      // 1. Obtenemos los elementos del DOM para el modal de detalles
+      const modalDetalles = document.getElementById('document-modal');
+      const closeModalBtn = document.getElementById('modal-close-btn');
+
+      // 2. Función para ABRIR y LLENAR el modal
+      function abrirModalDetalles(apunte) {
+        // 'apunte' es el objeto con los datos que viene de cargarApuntes
+
+        // Llenamos los datos del modal con la info del apunte
+        modalDetalles.querySelector('.document-card h2').innerHTML = `<i class="bi bi-file-earmark-text-fill"></i> ${apunte.titulo || 'Sin título'}`;
+        modalDetalles.querySelector('.description').textContent = apunte.descripcion || 'Sin descripción';
+
+        // Llenamos los detalles (Materia, Semestre)
+        modalDetalles.querySelector('.detail-item .subject-tag').textContent = apunte.materia || 'N/A';
+        modalDetalles.querySelector('.detail-item:nth-child(2) span').textContent = apunte.semestre || 'N/A';
+
+        // Llenar etiquetas (un poco más complejo porque son varias)
+        const etiquetasContainer = modalDetalles.querySelector('.labels-container');
+        etiquetasContainer.innerHTML = ''; // Limpiamos las etiquetas anteriores
+
+        if (apunte.etiquetas && apunte.etiquetas.length > 0) {
+          const etiquetasArray = apunte.etiquetas.split(','); // Asumimos que están separadas por coma
+          etiquetasArray.forEach(tag => {
+            if (tag.trim() === "") return; // Ignoramos etiquetas vacías
+            const span = document.createElement('span');
+            span.className = 'label-tag';
+            span.textContent = tag.trim();
+            etiquetasContainer.appendChild(span);
+          });
+        } else {
+          etiquetasContainer.innerHTML = '<span class="label-tag">Sin etiquetas</span>';
+        }
+
+        // TODO: Aquí deberías agregar la lógica para cargar los comentarios de este apunte
+        // const commentList = document.getElementById("comment-list");
+        // commentList.innerHTML = ''; // Limpiar comentarios
+        // fetch(`../backend/getComments.php?id=${apunte.id}`).then(...)
+
+        // Finalmente, mostramos el modal
+        // Dentro de la función abrirModalDetalles(apunte)
+
+        // Obtenemos el nuevo enlace por su ID
+        const downloadLink = document.getElementById('downloadLink');
+
+        const rutaBase = window.location.origin + '/biblio-tech/';
+        const rutaCompleta = rutaBase + apunte.ruta_archivo;
+        const nombreArchivo = apunte.titulo + '.' + apunte.ruta_archivo.split('.').pop(); // Nombre para la descarga
+
+        if (downloadLink) {
+          downloadLink.href = rutaCompleta;
+          downloadLink.download = nombreArchivo; // Sugiere un nombre de archivo para el usuario
+        }
+
+        // Finalmente, mostramos el modal
+        modalDetalles.classList.add('visible');
+        modalDetalles.classList.add('visible');
+      }
+
+      // 3. Función para CERRAR el modal
+      const closeModal = () => {
+        modalDetalles.classList.remove('visible');
+      }
+
+      // 4. Asignamos los eventos de CIERRE
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+      }
+      if (modalDetalles) {
+        modalDetalles.addEventListener('click', (event) => {
+          // Solo cierra si el clic fue directamente en el fondo
+          if (event.target === modalDetalles) {
+            closeModal();
+          }
+        });
+      }
+
+      // 5. Lógica para los comentarios (la que ya tenías)
+      const commentList = document.getElementById("comment-list");
+      const sendBtn = document.getElementById("send-comment");
+      const input = document.getElementById("comment-input");
+
+      if (sendBtn) {
+        sendBtn.addEventListener("click", () => {
+          const text = input.value.trim();
+          if (text !== "") {
+            addComment("Tú", text); // TODO: Aquí deberías guardar el comentario en la BD
+            input.value = "";
+          }
+        });
+      }
+
+      function addComment(author, text) {
+        const li = document.createElement("li");
+        // (Sería mejor usar la estructura HTML que ya tienes en 'comment-item')
+        li.innerHTML = `<strong>${author}:</strong> ${text}`;
+        commentList.appendChild(li);
+      }
+
+      // =================== FIN DEL NUEVO CÓDIGO ===================
+      function showTopMsg(msg, ok) {
+        const box = document.getElementById('uploadMsg');
+        box.textContent = msg;
+        box.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
+        box.style.display = 'block';
+        setTimeout(() => box.style.display = 'none', 3000);
+
+        // 🔽 ================== AGREGA ESTO ================== 🔽
+        // Si el mensaje fue de éxito (ok es true), recargamos los apuntes
+        if (ok) {
           setTimeout(() => {
-            card.style.transition = 'opacity 0.5s';
-            card.style.opacity = 1;
-          }, 100);
-        });
-      } catch (err) {
-        grid.innerHTML = '<p style="text-align:center; color:red;">Error al cargar los apuntes.</p>';
-        console.error("Error al cargar apuntes:", err);
-      }
-    }
-
-    // ... (Justo después del cierre de la función cargarApuntes() ) ...
-
-    // ========================================================
-    // === LÓGICA PARA EL MODAL DE DETALLES (EL NUEVO CÓDIGO) ===
-    // ========================================================
-
-    // 1. Obtenemos los elementos del DOM para el modal de detalles
-    const modalDetalles = document.getElementById('document-modal');
-    const closeModalBtn = document.getElementById('modal-close-btn');
-
-    // 2. Función para ABRIR y LLENAR el modal
-    function abrirModalDetalles(apunte) {
-      // 'apunte' es el objeto con los datos que viene de cargarApuntes
-
-      // Llenamos los datos del modal con la info del apunte
-      modalDetalles.querySelector('.document-card h2').innerHTML = `<i class="bi bi-file-earmark-text-fill"></i> ${apunte.titulo || 'Sin título'}`;
-      modalDetalles.querySelector('.description').textContent = apunte.descripcion || 'Sin descripción';
-
-      // Llenamos los detalles (Materia, Semestre)
-      modalDetalles.querySelector('.detail-item .subject-tag').textContent = apunte.materia || 'N/A';
-      modalDetalles.querySelector('.detail-item:nth-child(2) span').textContent = apunte.semestre || 'N/A';
-
-      // Llenar etiquetas (un poco más complejo porque son varias)
-      const etiquetasContainer = modalDetalles.querySelector('.labels-container');
-      etiquetasContainer.innerHTML = ''; // Limpiamos las etiquetas anteriores
-
-      if (apunte.etiquetas && apunte.etiquetas.length > 0) {
-        const etiquetasArray = apunte.etiquetas.split(','); // Asumimos que están separadas por coma
-        etiquetasArray.forEach(tag => {
-          if (tag.trim() === "") return; // Ignoramos etiquetas vacías
-          const span = document.createElement('span');
-          span.className = 'label-tag';
-          span.textContent = tag.trim();
-          etiquetasContainer.appendChild(span);
-        });
-      } else {
-        etiquetasContainer.innerHTML = '<span class="label-tag">Sin etiquetas</span>';
-      }
-
-      // TODO: Aquí deberías agregar la lógica para cargar los comentarios de este apunte
-      // const commentList = document.getElementById("comment-list");
-      // commentList.innerHTML = ''; // Limpiar comentarios
-      // fetch(`../backend/getComments.php?id=${apunte.id}`).then(...)
-
-      // Finalmente, mostramos el modal
-      modalDetalles.classList.add('visible');
-    }
-
-    // 3. Función para CERRAR el modal
-    const closeModal = () => {
-      modalDetalles.classList.remove('visible');
-    }
-
-    // 4. Asignamos los eventos de CIERRE
-    if (closeModalBtn) {
-      closeModalBtn.addEventListener('click', closeModal);
-    }
-    if (modalDetalles) {
-      modalDetalles.addEventListener('click', (event) => {
-        // Solo cierra si el clic fue directamente en el fondo
-        if (event.target === modalDetalles) {
-          closeModal();
+            cargarApuntes(); // ¡La función mágica!
+          }, 1000); // Esperamos 1 segundo para que dé tiempo de ver el msg
         }
-      });
-    }
-
-    // 5. Lógica para los comentarios (la que ya tenías)
-    const commentList = document.getElementById("comment-list");
-    const sendBtn = document.getElementById("send-comment");
-    const input = document.getElementById("comment-input");
-
-    if (sendBtn) {
-      sendBtn.addEventListener("click", () => {
-        const text = input.value.trim();
-        if (text !== "") {
-          addComment("Tú", text); // TODO: Aquí deberías guardar el comentario en la BD
-          input.value = "";
-        }
-      });
-    }
-
-    function addComment(author, text) {
-      const li = document.createElement("li");
-      // (Sería mejor usar la estructura HTML que ya tienes en 'comment-item')
-      li.innerHTML = `<strong>${author}:</strong> ${text}`;
-      commentList.appendChild(li);
-    }
-
-    // =================== FIN DEL NUEVO CÓDIGO ===================
-    function showTopMsg(msg, ok) {
-      const box = document.getElementById('uploadMsg');
-      box.textContent = msg;
-      box.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
-      box.style.display = 'block';
-      setTimeout(() => box.style.display = 'none', 3000);
-
-      // 🔽 ================== AGREGA ESTO ================== 🔽
-      // Si el mensaje fue de éxito (ok es true), recargamos los apuntes
-      if (ok) {
-        setTimeout(() => {
-          cargarApuntes(); // ¡La función mágica!
-        }, 1000); // Esperamos 1 segundo para que dé tiempo de ver el msg
-      }
-      // 🔼 ================== FIN DE LA ADICIÓN ================== 🔼
-    }
-
-    // Abrir/Cerrar modal
-    function abrirSubida() { document.getElementById('modalUpload').setAttribute('aria-hidden', 'false'); }
-    function cerrarSubida() {
-      document.getElementById('modalUpload').setAttribute('aria-hidden', 'true');
-      document.getElementById('formUpload').reset();
-      document.getElementById('formMsg').style.display = 'none';
-    }
-
-    // Efecto drag&drop
-    const dz = document.getElementById('dropzone');
-    const fi = document.getElementById('fileInput');
-    if (dz && fi) {
-      ['dragenter', 'dragover'].forEach(evt =>
-        dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.add('is-dragover'); })
-      );
-      ['dragleave', 'drop'].forEach(evt =>
-        dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.remove('is-dragover'); })
-      );
-      dz.addEventListener('drop', e => { fi.files = e.dataTransfer.files; });
-      dz.addEventListener('click', () => fi.click());
-    }
-
-    // Logout
-    function logout() {
-      fetch('../backend/controllers/authController.php?action=logout', { method: 'POST' })
-        .then(() => window.location.href = 'login.html');
-    }
-
-    // Manejo del submit (multipart/form-data)
-    const form = document.getElementById('formUpload');
-    const formMsg = document.getElementById('formMsg');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      formMsg.style.display = 'none';
-
-      const file = fi.files && fi.files[0];
-      if (!file) {
-        showFormMsg('Selecciona un archivo.', false);
-        return;
+        // 🔼 ================== FIN DE LA ADICIÓN ================== 🔼
       }
 
-      // Validaciones front
-      const allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx'];
-      const ext = file.name.split('.').pop().toLowerCase();
-      if (!allowed.includes(ext)) {
-        showFormMsg('Formato no permitido. Usa PDF, DOC, DOCX, PPT o PPTX.', false); return;
-      }
-      if (file.size > 25 * 1024 * 1024) {
-        showFormMsg('Archivo mayor a 25 MB.', false); return;
+      // Abrir/Cerrar modal
+      function abrirSubida() { document.getElementById('modalUpload').setAttribute('aria-hidden', 'false'); }
+      function cerrarSubida() {
+        document.getElementById('modalUpload').setAttribute('aria-hidden', 'true');
+        document.getElementById('formUpload').reset();
+        document.getElementById('formMsg').style.display = 'none';
       }
 
-      const data = new FormData();
-      data.append('archivo', file);
-      data.append('titulo', document.getElementById('titulo').value.trim());
-      data.append('descripcion', document.getElementById('descripcion').value.trim());
-      data.append('materia', document.getElementById('materia').value);
-      data.append('semestre', document.getElementById('semestre').value);
-      data.append('universidad', document.getElementById('universidad').value.trim());
-      data.append('carrera', document.getElementById('carrera').value.trim());
-      data.append('etiquetas', document.getElementById('etiquetas').value.trim());
+      // Efecto drag&drop
+      const dz = document.getElementById('dropzone');
+      const fi = document.getElementById('fileInput');
+      if (dz && fi) {
+        ['dragenter', 'dragover'].forEach(evt =>
+          dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.add('is-dragover'); })
+        );
+        ['dragleave', 'drop'].forEach(evt =>
+          dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.remove('is-dragover'); })
+        );
+        dz.addEventListener('drop', e => { fi.files = e.dataTransfer.files; });
+        dz.addEventListener('click', () => fi.click());
+      }
 
-      try {
-        const res = await fetch(UPLOAD_URL, { method: 'POST', body: data });
-        const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) {
-          const txt = await res.text();
-          showFormMsg('Respuesta no JSON del servidor: ' + txt.slice(0, 140) + '...', false);
+      // Logout
+      function logout() {
+        fetch('../backend/controllers/authController.php?action=logout', { method: 'POST' })
+          .then(() => window.location.href = 'login.html');
+      }
+
+      // Manejo del submit (multipart/form-data)
+      const form = document.getElementById('formUpload');
+      const formMsg = document.getElementById('formMsg');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formMsg.style.display = 'none';
+
+        const file = fi.files && fi.files[0];
+        if (!file) {
+          showFormMsg('Selecciona un archivo.', false);
           return;
         }
-        const json = await res.json();
-        if (json.success) {
-          showFormMsg('Documento subido correctamente.', true);
-          setTimeout(() => { cerrarSubida(); showTopMsg('Se guardó tu apunte.', true); }, 900);
-        } else {
-          showFormMsg(json.message || 'No se pudo subir el documento.', false);
-        }
-      } catch (err) {
-        showFormMsg('Error de red: ' + err.message, false);
-      }
-    });
 
-    function showFormMsg(msg, ok) {
-      formMsg.textContent = msg;
-      formMsg.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
-      formMsg.style.display = 'block';
-    }
-    // function showTopMsg(msg, ok) {
-    //   const box = document.getElementById('uploadMsg');
-    //   box.textContent = msg;
-    //   box.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
-    //   box.style.display = 'block';
-    //   setTimeout(() => box.style.display = 'none', 3000);
-    // }
-  </script>
-</body>
+        // Validaciones front
+        const allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx'];
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!allowed.includes(ext)) {
+          showFormMsg('Formato no permitido. Usa PDF, DOC, DOCX, PPT o PPTX.', false); return;
+        }
+        if (file.size > 25 * 1024 * 1024) {
+          showFormMsg('Archivo mayor a 25 MB.', false); return;
+        }
+
+        const data = new FormData();
+        data.append('archivo', file);
+        data.append('titulo', document.getElementById('titulo').value.trim());
+        data.append('descripcion', document.getElementById('descripcion').value.trim());
+        data.append('materia', document.getElementById('materia').value);
+        data.append('semestre', document.getElementById('semestre').value);
+        data.append('universidad', document.getElementById('universidad').value.trim());
+        data.append('carrera', document.getElementById('carrera').value.trim());
+        data.append('etiquetas', document.getElementById('etiquetas').value.trim());
+
+        try {
+          const res = await fetch(UPLOAD_URL, { method: 'POST', body: data });
+          const ct = res.headers.get('content-type') || '';
+          if (!ct.includes('application/json')) {
+            const txt = await res.text();
+            showFormMsg('Respuesta no JSON del servidor: ' + txt.slice(0, 140) + '...', false);
+            return;
+          }
+          const json = await res.json();
+          if (json.success) {
+            showFormMsg('Documento subido correctamente.', true);
+            setTimeout(() => { cerrarSubida(); showTopMsg('Se guardó tu apunte.', true); }, 900);
+          } else {
+            showFormMsg(json.message || 'No se pudo subir el documento.', false);
+          }
+        } catch (err) {
+          showFormMsg('Error de red: ' + err.message, false);
+        }
+      });
+
+      function showFormMsg(msg, ok) {
+        formMsg.textContent = msg;
+        formMsg.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
+        formMsg.style.display = 'block';
+      }
+      // function showTopMsg(msg, ok) {
+      //   const box = document.getElementById('uploadMsg');
+      //   box.textContent = msg;
+      //   box.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
+      //   box.style.display = 'block';
+      //   setTimeout(() => box.style.display = 'none', 3000);
+      // }
+    </script>
+  </body>
 
 </html>
