@@ -40,13 +40,15 @@ try {
             "idApuntes" => intval($row['idApuntes']),
             "titulo" => $row['titulo'],
             "descripcion" => $row['descripcion'],
+            "materia" => $row['materia'],
             "semestre" => $row['semestre'],
             "universidad" => $row['universidad'],
             "carrera" => $row['carrera'],
             "etiquetas" => $row['etiquetas'],
             "ruta_archivo" => $row['ruta_archivo'],
             "fecha_subida" => $row['fecha_subida'],
-            "usuario" => $row['idUsuario'] ?? null
+            "idUsuario" => $row['idUsuario'],
+            "nombre_usuario" => $row['nombre_usuario']
         ];
     }
 

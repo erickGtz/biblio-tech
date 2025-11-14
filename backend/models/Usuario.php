@@ -132,5 +132,12 @@ class Usuario {
 
         return false;
     }
+
+    public function obtenerAll() {
+        $sql = "SELECT * FROM " . $this->table_usuarios;
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
 }
 ?>

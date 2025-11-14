@@ -35,6 +35,7 @@ CREATE TABLE `apuntes` (
   `ruta_archivo` varchar(255) NOT NULL,
   `idUsuario` int(11) NOT NULL,
   `fecha_subida` date NOT NULL,
+  `materia` varchar(30) NOT NULL, // Agregar este campo en este orden
   `descripcion` text NOT NULL,
   `semestre` int(11) NOT NULL,
   `universidad` text NOT NULL,
