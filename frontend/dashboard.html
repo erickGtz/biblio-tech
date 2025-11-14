@@ -14,19 +14,19 @@
       display: none
     }
 
-    .modal-backdrop[aria-hidden="false"] {
-      display: block
-    }
+      .modal-backdrop[aria-hidden="false"] {
+        display: block
+      }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, .5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
 
     .modal {
       background: #fff;
@@ -124,23 +124,23 @@
       cursor: pointer
     }
 
-    .sr-only {
-      position: absolute;
-      left: -10000px
-    }
+      .sr-only {
+        position: absolute;
+        left: -10000px
+      }
 
-    .form-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin: 10px 0
-    }
+      .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 10px 0
+      }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px
-    }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px
+      }
 
     .btn-primary {
       background: #3b82f6;
@@ -168,18 +168,18 @@
       background: #d1d5db;
     }
 
-    .alert {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 14px
-    }
+      .alert {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 14px
+      }
 
-    .alert-ok {
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1px solid #10b981
-    }
+      .alert-ok {
+        background: #ecfdf5;
+        color: #065f46;
+        border: 1px solid #10b981
+      }
 
     .alert-err {
       background: #fef2f2;
@@ -303,13 +303,13 @@
     <div id="uploadMsg" class="alert" style="display:none"></div>
   </div>
 
-  <!-- ===== MODAL: SUBIR DOCUMENTO ===== -->
-  <div class="modal-backdrop" id="modalUpload" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadTitle">
-      <button class="modal-close" aria-label="Cerrar" onclick="cerrarSubida()">×</button>
+    <!-- ===== MODAL: SUBIR DOCUMENTO ===== -->
+    <div class="modal-backdrop" id="modalUpload" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadTitle">
+        <button class="modal-close" aria-label="Cerrar" onclick="cerrarSubida()">×</button>
 
-      <h2 id="uploadTitle">Subir documento</h2>
-      <p class="modal-subtitle">Comparte tus apuntes con la comunidad estudiantil</p>
+        <h2 id="uploadTitle">Subir documento</h2>
+        <p class="modal-subtitle">Comparte tus apuntes con la comunidad estudiantil</p>
 
       <!-- Dropzone con estados -->
       <label class="dropzone" id="dropzone">
@@ -337,48 +337,48 @@
 
       <input id="fileInput" name="archivo" type="file" class="sr-only" accept=".pdf,.doc,.docx,.ppt,.pptx" />
 
-      <!-- Formulario -->
-      <form id="formUpload" class="upload-form">
-        <div class="form-row">
-          <label for="titulo">Título del documento</label>
-          <input id="titulo" name="titulo" type="text" placeholder="Apuntes de Cálculo Integral – Capítulo 3"
-            required />
-        </div>
-
-        <div class="form-row">
-          <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" name="descripcion" rows="3" placeholder="Descripción detallada del contenido"
-            required></textarea>
-        </div>
-
-        <div class="grid-2">
+        <!-- Formulario -->
+        <form id="formUpload" class="upload-form">
           <div class="form-row">
-            <label for="materia">Materia</label>
-            <select id="materia" name="materia" required>
-              <option value="" disabled selected>Seleccionar materia</option>
-              <option>Matemáticas</option>
-              <option>Historia</option>
-              <option>Biología</option>
-              <option>Física</option>
-              <option>Programación</option>
-            </select>
+            <label for="titulo">Título del documento</label>
+            <input id="titulo" name="titulo" type="text" placeholder="Apuntes de Cálculo Integral – Capítulo 3"
+                   required />
           </div>
+
           <div class="form-row">
-            <label for="semestre">Semestre</label>
-            <select id="semestre" name="semestre" required>
-              <option value="" disabled selected>Seleccionar semestre</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-            </select>
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" rows="3" placeholder="Descripción detallada del contenido"
+                      required></textarea>
           </div>
-        </div>
+
+          <div class="grid-2">
+            <div class="form-row">
+              <label for="materia">Materia</label>
+              <select id="materia" name="materia" required>
+                <option value="" disabled selected>Seleccionar materia</option>
+                <option>Matemáticas</option>
+                <option>Historia</option>
+                <option>Biología</option>
+                <option>Física</option>
+                <option>Programación</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="semestre">Semestre</label>
+              <select id="semestre" name="semestre" required>
+                <option value="" disabled selected>Seleccionar semestre</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+              </select>
+            </div>
+          </div>
 
         <div class="grid-2">
           <div class="form-row">
@@ -391,15 +391,15 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <label for="etiquetas">Etiquetas</label>
-          <input id="etiquetas" name="etiquetas" type="text" placeholder="derivadas, límites, funciones, etc" />
-        </div>
+          <div class="form-row">
+            <label for="etiquetas">Etiquetas</label>
+            <input id="etiquetas" name="etiquetas" type="text" placeholder="derivadas, límites, funciones, etc" />
+          </div>
 
-        <div class="modal-actions" style="display:flex;gap:10px;justify-content:flex-end">
-          <button type="button" class="btn-secondary" onclick="cerrarSubida()">Cancelar</button>
-          <button type="submit" class="btn-primary">Subir documento</button>
-        </div>
+          <div class="modal-actions" style="display:flex;gap:10px;justify-content:flex-end">
+            <button type="button" class="btn-secondary" onclick="cerrarSubida()">Cancelar</button>
+            <button type="submit" class="btn-primary">Subir documento</button>
+          </div>
 
         <div id="formMsg" class="alert" style="display:none;"></div>
       </form>
@@ -560,10 +560,10 @@
 
         if (!data.success) throw new Error(data.message || "Error al cargar apuntes");
 
-        if (data.data.length === 0) {
-          grid.innerHTML = '<p style="text-align:center; color:#999;">No hay apuntes disponibles.</p>';
-          return;
-        }
+          if (data.data.length === 0) {
+            grid.innerHTML = '<p style="text-align:center; color:#999;">No hay apuntes disponibles.</p>';
+            return;
+          }
 
         grid.innerHTML = '';
 
