@@ -36,19 +36,27 @@ try {
 
     $apuntes = [];
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+
+         // si la clave no existe, regresa null (no lanza warning)
+        $materia     = $row['materia']     ?? null;
+        $semestre    = $row['semestre']    ?? null;
+        $universidad = $row['universidad'] ?? null;
+        $carrera     = $row['carrera']     ?? null;
+        $etiquetas   = $row['etiquetas']   ?? null;
+
         $apuntes[] = [
-            "idApuntes" => intval($row['idApuntes']),
-            "titulo" => $row['titulo'],
-            "descripcion" => $row['descripcion'],
-            "materia" => $row['materia'],
-            "semestre" => $row['semestre'],
-            "universidad" => $row['universidad'],
-            "carrera" => $row['carrera'],
-            "etiquetas" => $row['etiquetas'],
-            "ruta_archivo" => $row['ruta_archivo'],
-            "fecha_subida" => $row['fecha_subida'],
-            "idUsuario" => $row['idUsuario'],
-            "nombre_usuario" => $row['nombre_usuario']
+            "idApuntes"      => (int)$row['idApuntes'],
+            "titulo"         => $row['titulo'] ?? '',
+            "descripcion"    => $row['descripcion'] ?? '',
+            "materia"        => $materia,       // ← ahora sin warning
+            "semestre"       => $semestre,
+            "universidad"    => $universidad,
+            "carrera"        => $carrera,
+            "etiquetas"      => $etiquetas,
+            "ruta_archivo"   => $row['ruta_archivo'] ?? '',
+            "fecha_subida"   => $row['fecha_subida'] ?? '',
+            "idUsuario"      => $row['idUsuario'] ?? null,
+            "nombre_usuario" => $row['nombre_usuario'] ?? ''
         ];
     }
 
