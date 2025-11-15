@@ -76,12 +76,13 @@ try {
         'ruta_archivo' => $ruta_archivo,
         'idUsuario' => $idUsuario,
         'fecha_subida' => date('Y-m-d'),
+        'materia' => $materia,
         'descripcion' => $descripcion,
         'semestre' => $semestre,
         'universidad' => $universidad,
         'carrera' => $carrera,
         'etiquetas' => $etiquetas,
-        'materia' => $materia, // si luego desean normalizarla a otra tabla, aquí mismo la procesan
+         // si luego desean normalizarla a otra tabla, aquí mismo la procesan
     ]);
 
     if ($ok) {
