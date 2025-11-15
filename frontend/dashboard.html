@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <style>
-    /* Estilos mínimos para el modal y mensajes */
+    /* ====== Estilos mínimos locales para modal y estados del dropzone ====== */
     .modal-backdrop[aria-hidden="true"]{display:none}
     .modal-backdrop[aria-hidden="false"]{display:block}
     .modal-backdrop{
@@ -16,8 +16,25 @@
     }
     .modal{background:#fff;border-radius:12px;max-width:720px;width:95%;padding:20px;position:relative}
     .modal-close{position:absolute;top:8px;right:10px;font-size:22px;background:transparent;border:0;cursor:pointer}
-    .dropzone{border:2px dashed #999;border-radius:10px;padding:18px;display:block;cursor:pointer;text-align:center}
+    .dropzone{
+      border:2px dashed #9ca3af;border-radius:10px;padding:18px;display:block;
+      cursor:pointer;text-align:center; transition:background .15s,border-color .15s;
+    }
     .dropzone.is-dragover{background:#f2f7ff;border-color:#3b82f6}
+    .dropzone .dz-default{display:block}
+    .dropzone .dz-selected{display:none}
+    .dropzone.has-file .dz-default{display:none}
+    .dropzone.has-file .dz-selected{display:flex}
+    .dz-selected{align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .dz-file{
+      display:flex;align-items:center;gap:10px;
+      background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;
+      max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    }
+    .dz-file .name{font-weight:600}
+    .dz-file .size{font-size:12px;color:#475569}
+    .dz-actions{display:flex;gap:8px}
+    .dz-change{background:#e5e7eb;border:0;border-radius:8px;padding:8px 12px;cursor:pointer}
     .sr-only{position:absolute;left:-10000px}
     .form-row{display:flex;flex-direction:column;gap:6px;margin:10px 0}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -61,6 +78,9 @@
       <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
 
       <div id="uploadMsg" class="alert" style="display:none"></div>
+
+      <!-- (Aquí puedes renderizar tu listado de apuntes en tarjetas/simple lista) -->
+      <div id="listaApuntes"></div>
     </div>
   </div>
 
@@ -72,13 +92,29 @@
       <h2 id="uploadTitle">Subir documento</h2>
       <p class="modal-subtitle">Comparte tus apuntes con la comunidad estudiantil</p>
 
-      <!-- Dropzone -->
+      <!-- Dropzone con estados (default y seleccionado) -->
       <label class="dropzone" id="dropzone" for="fileInput">
-        <div class="dropzone-icon" style="font-size:28px">⬆️</div>
-        <div class="dropzone-text">
-          <strong>Arrastra tu archivo aquí</strong> o <u>haz clic para seleccionar</u><br />
-          <small>PDF, DOC, DOCX, PPT, PPTX (máx 25 MB)</small>
+        <!-- Estado por defecto -->
+        <div class="dz-default">
+          <div class="dropzone-icon" style="font-size:28px">⬆️</div>
+          <div class="dropzone-text">
+            <strong>Arrastra tu archivo aquí</strong> o <u>haz clic para seleccionar</u><br />
+            <small>PDF, DOC, DOCX, PPT, PPTX (máx 25 MB)</small>
+          </div>
         </div>
+
+        <!-- Estado con archivo seleccionado -->
+        <div class="dz-selected">
+          <div class="dz-file">
+            <i class="bi bi-file-earmark-text"></i>
+            <span class="name" id="dzFileName">Archivo seleccionado</span>
+            <span class="size" id="dzFileSize">(0 B)</span>
+          </div>
+          <div class="dz-actions">
+            <button type="button" class="dz-change" id="dzChangeBtn">Cambiar archivo</button>
+          </div>
+        </div>
+
         <input id="fileInput" name="archivo" type="file" class="sr-only" accept=".pdf,.doc,.docx,.ppt,.pptx" />
       </label>
 
@@ -144,21 +180,46 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script>
-    // --- RUTAS ---
-    // Desde frontend/dashboard.html la ruta correcta es:
+    // === RUTA DEL BACKEND (desde /frontend/dashboard.html) ===
     const UPLOAD_URL = '../backend/controllers/uploadController.php';
 
     // Abrir/Cerrar modal
     function abrirSubida(){ document.getElementById('modalUpload').setAttribute('aria-hidden','false'); }
-    function cerrarSubida(){ 
-      document.getElementById('modalUpload').setAttribute('aria-hidden','true'); 
+    function cerrarSubida(){
+      document.getElementById('modalUpload').setAttribute('aria-hidden','true');
+      // reset visual + form
+      resetDropzoneUI();
       document.getElementById('formUpload').reset();
       document.getElementById('formMsg').style.display='none';
     }
 
-    // Efecto drag&drop
+    // ---------- Dropzone ----------
     const dz = document.getElementById('dropzone');
     const fi = document.getElementById('fileInput');
+    const dzName = document.getElementById('dzFileName');
+    const dzSize = document.getElementById('dzFileSize');
+    const dzChangeBtn = document.getElementById('dzChangeBtn');
+
+    function formatBytes(bytes){
+      if (bytes === 0) return '0 B';
+      const k = 1024, dm = 1, sizes = ['B','KB','MB','GB','TB'];
+      const i = Math.floor(Math.log(bytes)/Math.log(k));
+      return parseFloat((bytes/Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    function setDropzoneFile(file){
+      dz.classList.add('has-file');
+      dzName.textContent = file.name;
+      dzSize.textContent = `(${formatBytes(file.size)})`;
+    }
+
+    function resetDropzoneUI(){
+      dz.classList.remove('has-file','is-dragover');
+      dzName.textContent = 'Archivo seleccionado';
+      dzSize.textContent = '(0 B)';
+      fi.value = '';
+    }
+
     if (dz && fi) {
       ['dragenter','dragover'].forEach(evt =>
         dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.add('is-dragover'); })
@@ -166,38 +227,44 @@
       ['dragleave','drop'].forEach(evt =>
         dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.remove('is-dragover'); })
       );
-      dz.addEventListener('drop', e => { fi.files = e.dataTransfer.files; });
+      dz.addEventListener('drop', e => {
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          fi.files = e.dataTransfer.files;
+          setDropzoneFile(e.dataTransfer.files[0]);
+        }
+      });
       dz.addEventListener('click', () => fi.click());
+      fi.addEventListener('change', () => {
+        if (fi.files && fi.files[0]) setDropzoneFile(fi.files[0]);
+      });
+      dzChangeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        fi.click();
+      });
     }
 
-    // Logout
+    // ---------- Logout ----------
     function logout() {
       fetch('../backend/controllers/authController.php?action=logout', { method: 'POST' })
         .then(() => window.location.href = 'login.html');
     }
 
-    // Manejo del submit (multipart/form-data)
+    // ---------- Envío del formulario ----------
     const form = document.getElementById('formUpload');
     const formMsg = document.getElementById('formMsg');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       formMsg.style.display='none';
 
       const file = fi.files && fi.files[0];
-      if (!file) {
-        showFormMsg('Selecciona un archivo.', false);
-        return;
-      }
+      if (!file) { return showFormMsg('Selecciona un archivo.', false); }
 
       // Validaciones front
       const allowed = ['pdf','doc','docx','ppt','pptx'];
       const ext = file.name.split('.').pop().toLowerCase();
-      if (!allowed.includes(ext)) {
-        showFormMsg('Formato no permitido. Usa PDF, DOC, DOCX, PPT o PPTX.', false); return;
-      }
-      if (file.size > 25 * 1024 * 1024) {
-        showFormMsg('Archivo mayor a 25 MB.', false); return;
-      }
+      if (!allowed.includes(ext)) return showFormMsg('Formato no permitido. Usa PDF, DOC, DOCX, PPT o PPTX.', false);
+      if (file.size > 25 * 1024 * 1024) return showFormMsg('Archivo mayor a 25 MB.', false);
 
       const data = new FormData();
       data.append('archivo', file);
@@ -214,12 +281,12 @@
         const ct = res.headers.get('content-type') || '';
         if (!ct.includes('application/json')) {
           const txt = await res.text();
-          showFormMsg('Respuesta no JSON del servidor: ' + txt.slice(0, 140) + '...', false);
-          return;
+          return showFormMsg('Respuesta no JSON del servidor: ' + txt.slice(0, 140) + '...', false);
         }
         const json = await res.json();
         if (json.success) {
           showFormMsg('Documento subido correctamente.', true);
+          // Resetear estado del dropzone y cerrar modal
           setTimeout(() => { cerrarSubida(); showTopMsg('Se guardó tu apunte.', true); }, 900);
         } else {
           showFormMsg(json.message || 'No se pudo subir el documento.', false);
