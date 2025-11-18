@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-11-2025 a las 18:43:00
+-- Tiempo de generación: 14-11-2025 a las 17:32:02
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -35,12 +35,21 @@ CREATE TABLE `apuntes` (
   `ruta_archivo` varchar(255) NOT NULL,
   `idUsuario` int(11) NOT NULL,
   `fecha_subida` date NOT NULL,
+  `materia` varchar(30) NOT NULL,
   `descripcion` text NOT NULL,
   `semestre` int(11) NOT NULL,
   `universidad` text NOT NULL,
   `carrera` text NOT NULL,
   `etiquetas` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `apuntes`
+--
+
+INSERT INTO `apuntes` (`idApuntes`, `titulo`, `ruta_archivo`, `idUsuario`, `fecha_subida`, `materia`, `descripcion`, `semestre`, `universidad`, `carrera`, `etiquetas`) VALUES
+(1, 'Cubo de datos', 'uploads/apunte_6917b9056fcbd8.98267849.pdf', 1, '2025-11-14', 'Programación', 'Documentacion de Cubo de datos', 8, 'BUAP', 'Ingeniería en sistemas', 'BI'),
+(2, 'Cielos', 'uploads/apunte_6917b93bdba669.40204203.pdf', 1, '2025-11-14', 'Programación', 'Practica de Graficos, creando cielos', 5, 'BUAP', 'Ingeniería en sistemas', 'Graficos, OpenGL, Animacion');
 
 -- --------------------------------------------------------
 
@@ -129,6 +138,13 @@ CREATE TABLE `usuarios` (
   `idGrado_Academico` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`idUsuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `fecha_nacimiento`, `escuela`, `idGrado_Academico`) VALUES
+(1, 'Erick', 'G', 'S', '2002-12-12', 'BUAP', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -140,6 +156,13 @@ CREATE TABLE `usuarios_credenciales` (
   `correo` varchar(100) NOT NULL,
   `contrasena` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios_credenciales`
+--
+
+INSERT INTO `usuarios_credenciales` (`Usuario_idUsuario`, `correo`, `contrasena`) VALUES
+(1, 'erick@mail.com', '$2y$10$Yzj335YMSJ.szodlvKVi2OWfZXtZPLmIuatA3iUynNS4YjfbF68gS');
 
 --
 -- Índices para tablas volcadas
@@ -210,7 +233,7 @@ ALTER TABLE `usuarios_credenciales`
 -- AUTO_INCREMENT de la tabla `apuntes`
 --
 ALTER TABLE `apuntes`
-  MODIFY `idApuntes` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idApuntes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `apuntes_materias`
@@ -246,7 +269,7 @@ ALTER TABLE `puntuaciones`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
