@@ -55,3 +55,93 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const commentList = document.getElementById("comment-list");
+    const sendBtn = document.getElementById("send-comment");
+    const commentInput = document.getElementById("comment-input");
+
+    const idApunte = 1;   // <-- PON AQUÍ EL ID del apunte que se está mostrando
+    const idUsuario = 1;  // <-- EL USUARIO LOGGEADO (poner desde sesión)
+
+    // -------------------------------------------------------------------
+    // Cargar comentarios existentes
+    // -------------------------------------------------------------------
+    function cargarComentarios() {
+        fetch(`../backend/controllers/comentariosController.php?idApunte=${idApunte}`)
+            .then(res => res.json())
+            .then(comentarios => {
+                commentList.innerHTML = ""; // limpiar lista
+
+                comentarios.forEach(c => {
+                    agregarComentarioDOM(
+                        c.nombre + " " + c.apellido_paterno + " " + c.apellido_materno,
+                        c.contenido,
+                        c.fecha_comentario
+                    );
+                });
+            });
+    }
+
+    // -------------------------------------------------------------------
+    // Enviar comentario
+    // -------------------------------------------------------------------
+    sendBtn.addEventListener("click", () => {
+        const texto = commentInput.value.trim();
+        if (texto === "") return;
+
+        const formData = new FormData();
+        formData.append("comentario", texto);
+        formData.append("idUsuario", idUsuario);
+        formData.append("idApunte", idApunte);
+
+        fetch("../backend/controllers/comentariosController.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            agregarComentarioDOM(data.nombre, data.contenido, data.fecha);
+            commentInput.value = "";
+        });
+    });
+
+    // -------------------------------------------------------------------
+    // Función que agrega comentarios al DOM
+    // -------------------------------------------------------------------
+    function agregarComentarioDOM(autor, texto, fecha) {
+
+        const fechaFormateada = new Date(fecha).toLocaleString("es-MX", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+        const li = document.createElement("li");
+        li.classList.add("comment-item");
+        li.innerHTML = `
+            <div class="comment-header">
+                <img src="https://i.pravatar.cc/30?u=${autor}" class="comment-avatar">
+                <div class="comment-author-info">
+                    <span class="comment-author-name">${autor}</span>
+                    <span class="comment-timestamp">${fechaFormateada}</span>
+                </div>
+            </div>
+            <p class="comment-body">${texto}</p>
+            <div class="comment-actions">
+                <button class="action-btn useful"><i class="bi bi-hand-thumbs-up"></i> Útil</button>
+                <button class="action-btn not-useful"><i class="bi bi-hand-thumbs-down"></i> No útil</button>
+            </div>
+        `;
+
+        commentList.prepend(li);
+    }
+
+    // Cargar al inicio
+    cargarComentarios();
+
+});
+
