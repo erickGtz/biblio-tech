@@ -33,4 +33,11 @@ class Apunte {
             ':etiquetas' => $data['etiquetas'],
         ]);
     }
+
+    public function obtenerTodos() {
+        $sql = "SELECT * FROM " . $this->table . " ORDER BY fecha_subida DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
 }
