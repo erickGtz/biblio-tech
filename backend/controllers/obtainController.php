@@ -31,31 +31,6 @@ try {
 
     $result = $apunte->buscarApuntes($termino, $filtro);
 
-    // Obtener apuntes
-    //$result = $apunte->obtenerTodos();
-
-    // if (!$result || $result->rowCount() === 0) {
-    //     echo json_encode(["success" => true, "data" => []]);
-    //     exit;
-    // }
-
-    // $apuntes = [];
-    // while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    //     $apuntes[] = [
-    //         "idApuntes" => intval($row['idApuntes']),
-    //         "titulo" => $row['titulo'],
-    //         "descripcion" => $row['descripcion'],
-    //         "materia" => $row['materia'],
-    //         "semestre" => $row['semestre'],
-    //         "universidad" => $row['universidad'],
-    //         "carrera" => $row['carrera'],
-    //         "etiquetas" => $row['etiquetas'],
-    //         "ruta_archivo" => $row['ruta_archivo'],
-    //         "fecha_subida" => $row['fecha_subida'],
-    //         "idUsuario" => $row['idUsuario'],
-    //         "nombre_usuario" => $row['nombre_usuario']
-    //     ];
-    // }
     if (!$result) {
         // Esto es por si el método 'buscarApuntes' devuelve 'false' (un error de SQL)
         throw new Exception("Error al ejecutar la búsqueda de apuntes.");
