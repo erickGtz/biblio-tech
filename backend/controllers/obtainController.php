@@ -22,34 +22,52 @@ try {
         exit;
     }
 
+    $termino = $_GET['termino'] ?? '';
+    $filtro = $_GET['filtro'] ?? 'todo';
+
     // Conexión a la base de datos
     $db = (new Database())->getConnection();
     $apunte = new Apunte($db);
 
-    // Obtener apuntes
-    $result = $apunte->obtenerTodos();
+    $result = $apunte->buscarApuntes($termino, $filtro);
 
-    if (!$result || $result->rowCount() === 0) {
-        echo json_encode(["success" => true, "data" => []]);
-        exit;
+    // Obtener apuntes
+    //$result = $apunte->obtenerTodos();
+
+    // if (!$result || $result->rowCount() === 0) {
+    //     echo json_encode(["success" => true, "data" => []]);
+    //     exit;
+    // }
+
+    // $apuntes = [];
+    // while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    //     $apuntes[] = [
+    //         "idApuntes" => intval($row['idApuntes']),
+    //         "titulo" => $row['titulo'],
+    //         "descripcion" => $row['descripcion'],
+    //         "materia" => $row['materia'],
+    //         "semestre" => $row['semestre'],
+    //         "universidad" => $row['universidad'],
+    //         "carrera" => $row['carrera'],
+    //         "etiquetas" => $row['etiquetas'],
+    //         "ruta_archivo" => $row['ruta_archivo'],
+    //         "fecha_subida" => $row['fecha_subida'],
+    //         "idUsuario" => $row['idUsuario'],
+    //         "nombre_usuario" => $row['nombre_usuario']
+    //     ];
+    // }
+    if (!$result) {
+        // Esto es por si el método 'buscarApuntes' devuelve 'false' (un error de SQL)
+        throw new Exception("Error al ejecutar la búsqueda de apuntes.");
     }
 
-    $apuntes = [];
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        $apuntes[] = [
-            "idApuntes" => intval($row['idApuntes']),
-            "titulo" => $row['titulo'],
-            "descripcion" => $row['descripcion'],
-            "materia" => $row['materia'],
-            "semestre" => $row['semestre'],
-            "universidad" => $row['universidad'],
-            "carrera" => $row['carrera'],
-            "etiquetas" => $row['etiquetas'],
-            "ruta_archivo" => $row['ruta_archivo'],
-            "fecha_subida" => $row['fecha_subida'],
-            "idUsuario" => $row['idUsuario'],
-            "nombre_usuario" => $row['nombre_usuario']
-        ];
+    // Obtenemos TODOS los resultados en un array de una sola vez
+    $apuntes = $result->fetchAll(PDO::FETCH_ASSOC);
+
+    if (count($apuntes) === 0) {
+        // No es un error, simplemente no hay resultados
+        echo json_encode(["success" => true, "data" => []]);
+        exit;
     }
 
     echo json_encode([
