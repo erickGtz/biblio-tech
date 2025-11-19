@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const commentInput = document.getElementById("comment-input");
 
     const idApunte = 1;   // <-- PON AQUÍ EL ID del apunte que se está mostrando
-    const idUsuario = 1;  // <-- EL USUARIO LOGGEADO (poner desde sesión)
+    const idUsuario = 2;  // <-- EL USUARIO LOGGEADO (poner desde sesión)
 
     // -------------------------------------------------------------------
     // Cargar comentarios existentes
