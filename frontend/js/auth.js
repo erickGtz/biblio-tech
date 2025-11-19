@@ -41,9 +41,12 @@ if (loginForm) {
             });
 
             const result = await response.json();
+            const userId = result.data.idUsuario;
 
             if (result.success) {
                 showMessage('Inicio de sesión exitoso', 'success');
+                localStorage.setItem('user_id', userId);
+                
                 // Redirigir al dashboard o página principal
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';

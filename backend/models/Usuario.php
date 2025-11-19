@@ -3,8 +3,8 @@
 
 class Usuario {
     private $conn;
-    private $table_usuarios = 'Usuarios';
-    private $table_credenciales = 'Usuarios_Credenciales';
+    private $table_usuarios = 'usuarios';
+    private $table_credenciales = 'usuarios_Credenciales';
 
     public $idUsuario;
     public $nombre;

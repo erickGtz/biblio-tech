@@ -29,7 +29,20 @@ body {
 /* Estilos para Login */
 .left-panel {
     flex: 1;
-    background-color: #1a1f4d;
+    background-color: #191f41;
+
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+}
+
+.logo {
+    /* Define el ancho MÁXIMO del logo (ajústalo al tamaño deseado) */
+    max-width: 350px; 
+    /* Altura automática para mantener la proporción de la imagen */
+    height: auto; 
+    /* Asegura que el logo se comporte bien dentro del Flexbox */
+    display: block;
 }
 
 .right-panel {
@@ -53,7 +66,10 @@ body {
 
 .right-panel-register {
     flex: 1;
-    background-color: #1a1f4d;
+    background-color: #191f41;
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
 }
 
 .form-container {

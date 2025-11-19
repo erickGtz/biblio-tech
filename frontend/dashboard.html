@@ -5,11 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vista General • BiblioTech</title>
-  <link rel="stylesheet" href="css/style.css?v=1.1" />
+  <link rel="stylesheet" href="css/style.css?v=2.2" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/styles.css" />
   <style>
-    /* Estilos mínimos para el modal y mensajes */
+    /* Estilos para modal y mensajes */
     .modal-backdrop[aria-hidden="true"] {
       display: none
     }
@@ -34,7 +34,9 @@
       max-width: 720px;
       width: 95%;
       padding: 20px;
-      position: relative
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .modal-close {
@@ -44,21 +46,82 @@
       font-size: 22px;
       background: transparent;
       border: 0;
-      cursor: pointer
+      cursor: pointer;
+      z-index: 1;
     }
 
     .dropzone {
-      border: 2px dashed #999;
+      border: 2px dashed #9ca3af;
       border-radius: 10px;
       padding: 18px;
       display: block;
       cursor: pointer;
-      text-align: center
+      text-align: center;
+      transition: background .15s, border-color .15s;
     }
 
     .dropzone.is-dragover {
       background: #f2f7ff;
       border-color: #3b82f6
+    }
+
+    .dropzone .dz-default {
+      display: block
+    }
+
+    .dropzone .dz-selected {
+      display: none
+    }
+
+    .dropzone.has-file .dz-default {
+      display: none
+    }
+
+    .dropzone.has-file .dz-selected {
+      display: flex
+    }
+
+    .dz-selected {
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .dz-file {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dz-file .name {
+      font-weight: 600
+    }
+
+    .dz-file .size {
+      font-size: 12px;
+      color: #475569
+    }
+
+    .dz-actions {
+      display: flex;
+      gap: 8px
+    }
+
+    .dz-change {
+      background: #e5e7eb;
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer
     }
 
     .sr-only {
@@ -88,6 +151,10 @@
       cursor: pointer
     }
 
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+
     .btn-secondary {
       background: #e5e7eb;
       color: #111;
@@ -95,6 +162,10 @@
       border-radius: 8px;
       padding: 10px 14px;
       cursor: pointer
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
     }
 
     .alert {
@@ -115,6 +186,92 @@
       color: #991b1b;
       border: 1px solid #ef4444
     }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .rating .star {
+      font-size: 20px;
+      color: #ddd;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .rating .star:hover {
+      transform: scale(1.2);
+    }
+
+    .rating .star.hover {
+      color: #ffc107;
+    }
+
+    .rating .star.active {
+      color: #ffc107;
+    }
+
+    .rating .star.user-rated {
+      color: #ff6b35;
+    }
+
+    .rating .avg-text {
+      margin-left: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Contenedor principal de cada comentario */
+    #comment-list .comment-item {
+      list-style: none;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
+    }
+
+    /* Efecto hover moderno */
+    #comment-list .comment-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Encabezado (nombre + fecha) */
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* Nombre */
+    .comment-user strong {
+      font-size: 15px;
+      color: #1f2937;
+    }
+
+    /* Fecha */
+    .comment-date {
+      font-size: 13px;
+      color: #6b7280;
+      /* gris elegante */
+    }
+
+    /* Cuerpo del comentario */
+    .comment-body p {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.5;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 
@@ -123,14 +280,14 @@
   <header>
     <div class="logo">BiblioTech</div>
     <div class="search-bar">
-      <input type="text">
+      <input type="text" id="searchInput" placeholder="Buscar apuntes...">
       <i class="bi bi-search"></i>
       <select id="search-filter">
         <option value="todo">En todo</option>
         <option value="materias">Materias</option>
         <option value="usuarios">Usuarios</option>
       </select>
-      <button class="btn">Buscar</button>
+      <button class="btn" id="searchButton">Buscar</button>
     </div>
     <div class="header-right">
       <button class="btn-upload" onclick="abrirSubida()">Subir documento</button>
@@ -140,27 +297,11 @@
   </header>
 
   <!-- ===== CONTENIDO ===== -->
-
   <div class="dashboard-container" style="padding:40px">
     <h2 class="section-title">Documentos publicados</h2>
     <div class="apuntes-grid" id="apuntesGrid"></div>
     <div id="uploadMsg" class="alert" style="display:none"></div>
   </div>
-
-  <!-- <div class="dashboard-container">
-    <div class="dashboard-content">
-      <h1>Vista General</h1>
-      <p class="dashboard-message">Aquí estará la vista general de la aplicación</p>
-
-      <div class="user-info">
-        <p>Bienvenido, <span id="userName">Usuario</span></p>
-      </div>
-
-
-
-      <div id="uploadMsg" class="alert" style="display:none"></div>
-    </div>
-  </div> -->
 
   <!-- ===== MODAL: SUBIR DOCUMENTO ===== -->
   <div class="modal-backdrop" id="modalUpload" aria-hidden="true">
@@ -170,15 +311,31 @@
       <h2 id="uploadTitle">Subir documento</h2>
       <p class="modal-subtitle">Comparte tus apuntes con la comunidad estudiantil</p>
 
-      <!-- Dropzone -->
-      <label class="dropzone" id="dropzone" for="fileInput">
-        <div class="dropzone-icon" style="font-size:28px">⬆️</div>
-        <div class="dropzone-text">
-          <strong>Arrastra tu archivo aquí</strong> o <u>haz clic para seleccionar</u><br />
-          <small>PDF, DOC, DOCX, PPT, PPTX (máx 25 MB)</small>
+      <!-- Dropzone con estados -->
+      <label class="dropzone" id="dropzone">
+        <!-- Estado por defecto -->
+        <div class="dz-default">
+          <div class="dropzone-icon" style="font-size:28px">⬆️</div>
+          <div class="dropzone-text">
+            <strong>Arrastra tu archivo aquí</strong> o <u>haz clic para seleccionar</u><br />
+            <small>PDF, DOC, DOCX, PPT, PPTX (máx 25 MB)</small>
+          </div>
         </div>
-        <input id="fileInput" name="archivo" type="file" class="sr-only" accept=".pdf,.doc,.docx,.ppt,.pptx" />
+
+        <!-- Estado con archivo seleccionado -->
+        <div class="dz-selected">
+          <div class="dz-file">
+            <i class="bi bi-file-earmark-text"></i>
+            <span class="name" id="dzFileName">Archivo seleccionado</span>
+            <span class="size" id="dzFileSize">(0 B)</span>
+          </div>
+          <div class="dz-actions">
+            <button type="button" class="dz-change" id="dzChangeBtn">Cambiar archivo</button>
+          </div>
+        </div>
       </label>
+
+      <input id="fileInput" name="archivo" type="file" class="sr-only" accept=".pdf,.doc,.docx,.ppt,.pptx" />
 
       <!-- Formulario -->
       <form id="formUpload" class="upload-form">
@@ -255,43 +412,38 @@
       <button id="modal-close-btn" class="modal-close-btn">&times;</button>
       <main>
         <div class="document-card">
-          <h2><i class="bi bi-file-earmark-text-fill"></i>Apuntes de Cálculo Diferencial - Derivadas y
-            Límites
-          </h2>
+          <h2><i class="bi bi-file-earmark-text-fill"></i>Apuntes de Cálculo Diferencial</h2>
 
           <div class="meta-info">
             <p class="author">
               <img src="https://i.pravatar.cc/30" alt="autor">
-              Gabriel López • 27 de Septiembre de 2025, 16:33
+              <span id="authorName">Gabriel López</span> • <span id="authorDate">27 de Septiembre de 2025</span>
             </p>
             <div class="stats">
-              <span><i class="bi bi-download"></i> 5 descargas</span>
-              <span><i class="bi bi-chat-dots"></i> 3 comentarios</span>
+              <span><i class="bi bi-download"></i> <span id="downloadCount">5</span> descargas</span>
+              <span><i class="bi bi-chat-dots"></i> <span id="commentCount">3</span> comentarios</span>
             </div>
           </div>
-          <p class="description">
-            Resumen completo del capítulo de derivadas incluyendo ejercicios resueltos y teoremas
-            fundamentales
+          <p class="description" id="modalDescription">
+            Resumen completo del capítulo de derivadas incluyendo ejercicios resueltos
           </p>
 
           <div class="document-details">
             <div class="detail-item">
               <i class="bi bi-book"></i>
               <strong>Materia:</strong>
-              <span class="subject-tag">Matemáticas</span>
+              <span class="subject-tag" id="modalMateria">Matemáticas</span>
             </div>
             <div class="detail-item">
               <i class="bi bi-mortarboard"></i>
               <strong>Semestre:</strong>
-              <span>2</span>
+              <span id="modalSemestre">2</span>
             </div>
             <div class="detail-item labels-title">
               <strong>Etiquetas</strong>
             </div>
-            <div class="labels-container">
+            <div class="labels-container" id="modalEtiquetas">
               <span class="label-tag">Derivadas</span>
-              <span class="label-tag">Límites</span>
-              <span class="label-tag">Funciones</span>
             </div>
           </div>
 
@@ -299,54 +451,14 @@
             <div class="rating-section">
               <div class="rating-line">
                 <strong>Puntuación</strong>
-                <div class="stars" id="stars">
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
+                <div class="rating" data-apunte-id="">
+                  <span class="star" data-value="1">★</span>
+                  <span class="star" data-value="2">★</span>
+                  <span class="star" data-value="3">★</span>
+                  <span class="star" data-value="4">★</span>
+                  <span class="star" data-value="5">★</span>
 
-                  <span class="rating-text">4.0 (25 puntuaciones)</span>
-                </div>
-              </div>
-              <div class="rating-line">
-                <span>Tu puntuación</span>
-                <div class="user-stars" id="user-stars">
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                  <svg class="star-svg filled" viewBox="0 0 24 24">
-                    <path
-                      d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
+                  <span class="avg-text">(0.0 ⭐ — 0 votos)</span>
                 </div>
               </div>
             </div>
@@ -356,336 +468,636 @@
           </div>
 
           <section class="comments">
-            <h3><i class="bi bi-chat-right-text"></i> Comentarios (3)</h3>
-
+            <h3><i class="bi bi-chat-right-text"></i> Comentarios (<span id="commentCountText">3</span>)</h3>
             <div class="comment-form">
               <textarea id="comment-input" placeholder="Escribe tu comentario" rows="1"></textarea>
               <button id="send-comment" class="btn-submit-comment">Enviar</button>
             </div>
-
-            <ul id="comment-list">
-              <li class="comment-item">
-                <div class="comment-header">
-                  <img src="https://i.pravatar.cc/30?u=eduardo" alt="Avatar" class="comment-avatar">
-                  <div class="comment-author-info">
-                    <span class="comment-author-name">Eduardo Flores</span>
-                    <span class="comment-timestamp">27 de Septiembre de 2025, 16:33</span>
-                  </div>
-                </div>
-                <p class="comment-body">
-                  Excelentes apuntes, me ayudaron para mi exámen
-                </p>
-                <div class="comment-actions">
-                  <button class="action-btn useful"><i class="bi bi-hand-thumbs-up"></i>
-                    Útil</button>
-                  <button class="action-btn not-useful"><i class="bi bi-hand-thumbs-down"></i> No
-                    útil</button>
-                </div>
-              </li>
-            </ul>
+            <ul id="comment-list"></ul>
           </section>
         </div>
       </main>
     </div>
   </div>
+
   <!-- ===== SCRIPTS ===== -->
   <script>
-    // --- RUTAS ---
-    // Desde frontend/dashboard.html la ruta correcta es:
+    // === CONFIGURACIÓN ===
     const UPLOAD_URL = '../backend/controllers/uploadController.php';
     const GET_APUNTES_URL = '../backend/controllers/obtainController.php';
 
+    // Log para debug
+    console.log('🔧 Rutas configuradas:');
+    console.log('  - Upload:', UPLOAD_URL);
+    console.log('  - Get Apuntes:', GET_APUNTES_URL);
+
+    // === VARIABLES GLOBALES ===
+    let selectedFile = null;
+
+    // === INICIALIZACIÓN ===
     document.addEventListener('DOMContentLoaded', () => {
+      initSearch();
+      initDropzone();
+      initForm();
+      initModal();
       cargarApuntes();
     });
 
-    async function cargarApuntes() {
+    // === FUNCIONES DE BÚSQUEDA ===
+    function initSearch() {
+      const searchBtn = document.getElementById('searchButton');
+      const searchInput = document.getElementById('searchInput');
+      const searchFilter = document.getElementById('search-filter');
+
+      const realizarBusqueda = () => {
+        const termino = searchInput.value;
+        const filtro = searchFilter.value;
+        cargarApuntes(termino, filtro);
+      };
+
+      searchBtn.addEventListener('click', realizarBusqueda);
+      searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') realizarBusqueda();
+      });
+    }
+
+    // === CARGAR APUNTES ===
+    async function cargarApuntes(termino = '', filtro = 'todo') {
       const grid = document.getElementById('apuntesGrid');
       grid.innerHTML = '<p style="text-align:center; color:#666;">Cargando apuntes...</p>';
 
+      const params = new URLSearchParams({ termino, filtro });
+      const urlConBusqueda = `${GET_APUNTES_URL}?${params.toString()}`;
+
       try {
-        const res = await fetch(GET_APUNTES_URL);
+        const res = await fetch(urlConBusqueda);
         const data = await res.json();
 
-        if (!data.success) throw new Error("No se pudieron obtener los apuntes");
+        if (!data.success) throw new Error(data.message || "Error al cargar apuntes");
 
         if (data.data.length === 0) {
           grid.innerHTML = '<p style="text-align:center; color:#999;">No hay apuntes disponibles.</p>';
           return;
         }
 
-        grid.innerHTML = ''; // limpiar
+        grid.innerHTML = '';
 
         data.data.forEach(apunte => {
           const card = document.createElement('div');
           card.classList.add('apunte-card');
-          card.style.opacity = 0; // para animación suave
-
           card.innerHTML = `
-        <h3 class="apunte-titulo">${apunte.titulo || ''}</h3>
-        <p class="apunte-fecha">${apunte.fecha_subida || 'Fecha no disponible'}</p>
-        <p class="apunte-descripcion">${apunte.descripcion || ''}</p>
-        <p class="apunte-etiquetas">${(apunte.etiquetas || 'Sin etiquetas')} • ${(apunte.carrera || '')}</p>
-      `;
+            <h3 class="apunte-titulo">${apunte.titulo || 'Sin título'}</h3>
+            <p class="apunte-fecha">${apunte.fecha_subida || 'Fecha no disponible'}</p>
+            <p class="apunte-descripcion">${apunte.descripcion || 'Sin descripción'}</p>
+            <p class="apunte-etiquetas">${apunte.etiquetas || 'Sin etiquetas'} • ${apunte.carrera || ''}</p>
+          `;
 
+          card.addEventListener('click', () => abrirModalDetalles(apunte));
           grid.appendChild(card);
-
-          card.addEventListener('click', (e) => {
-            // Evitamos que el clic en el link "Ver documento" abra el modal
-            if (e.target.classList.contains('btn-ver')) {
-              return;
-            }
-            abrirModalDetalles(apunte); // Le pasamos los datos del apunte
-          });
-
-          setTimeout(() => {
-            card.style.transition = 'opacity 0.5s';
-            card.style.opacity = 1;
-          }, 100);
         });
       } catch (err) {
-        grid.innerHTML = '<p style="text-align:center; color:red;">Error al cargar los apuntes.</p>';
         console.error("Error al cargar apuntes:", err);
+        grid.innerHTML = '<p style="text-align:center; color:red;">Error al cargar los apuntes.</p>';
       }
     }
 
-    // ========================================================
-    // === LÓGICA PARA EL MODAL DE DETALLES (EL NUEVO CÓDIGO) ===
-    // ========================================================
+    // === MODAL DE DETALLES ===
+    function initModal() {
+      const modalDetalles = document.getElementById('document-modal');
+      const closeModalBtn = document.getElementById('modal-close-btn');
 
-    // 1. Obtenemos los elementos del DOM para el modal de detalles
-    const modalDetalles = document.getElementById('document-modal');
-    const closeModalBtn = document.getElementById('modal-close-btn');
-
-    // 2. Función para ABRIR y LLENAR el modal
-    function abrirModalDetalles(apunte) {
-      // 'apunte' es el objeto con los datos que viene de cargarApuntes
-      // 1. Selecciona el contenedor del autor
-      const authorEl = modalDetalles.querySelector('p.author');
-
-      // 2. Formateamos la fecha (ej: '2025-11-14' -> '14 de noviembre de 2025')
-      let fechaFormateada = apunte.fecha_subida; // Valor por defecto
-      try {
-        // Esto es más seguro para fechas 'YYYY-MM-DD' y evita problemas de zona horaria
-        const parts = apunte.fecha_subida.split(' ')[0].split('-'); // Tomamos solo la fecha, por si es DATETIME
-        const fecha = new Date(parts[0], parseInt(parts[1]) - 1, parts[2]); // Mes es 0-indexado (0=Ene)
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        fechaFormateada = fecha.toLocaleDateString('es-ES', options);
-      } catch (e) {
-        // Si falla el formateo, al menos muestra la fecha original
-        console.warn("No se pudo formatear la fecha:", apunte.fecha_subida);
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+          modalDetalles.classList.remove('visible');
+        });
       }
 
-      // 3. Define el avatar. (Asume que tu PHP envía 'avatar_usuario')
-      const avatar = apunte.avatar_usuario || 'https://i.pravatar.cc/30'; // Usa un avatar default si no viene
+      if (modalDetalles) {
+        modalDetalles.addEventListener('click', (event) => {
+          if (event.target === modalDetalles) {
+            modalDetalles.classList.remove('visible');
+          }
+        });
+      }
+    }
 
-      // 4. Actualiza el HTML de esa sección
-      // Asume que tu PHP envía 'nombre_usuario'
+    function abrirModalDetalles(apunte) {
+      const modal = document.getElementById('document-modal');
+
+      // Actualizar título
+      modal.querySelector('.document-card h2').innerHTML =
+        `<i class="bi bi-file-earmark-text-fill"></i> ${apunte.titulo || 'Sin título'}`;
+
+      // Actualizar descripción
+      modal.querySelector('.description').textContent = apunte.descripcion || 'Sin descripción';
+
+      // Actualizar autor y fecha
+      const authorEl = modal.querySelector('p.author');
+      const avatar = apunte.avatar_usuario || 'https://i.pravatar.cc/30';
+      const fechaFormateada = formatearFecha(apunte.fecha_subida);
       authorEl.innerHTML = `
         <img src="${avatar}" alt="autor">
         ${apunte.nombre_usuario || 'Autor Desconocido'} • ${fechaFormateada}
-    `;
-      // Llenamos los datos del modal con la info del apunte
-      modalDetalles.querySelector('.document-card h2').innerHTML = `<i class="bi bi-file-earmark-text-fill"></i> ${apunte.titulo || 'Sin título'}`;
-      modalDetalles.querySelector('.description').textContent = apunte.descripcion || 'Sin descripción';
+      `;
 
-      // Llenamos los detalles (Materia, Semestre)
-      modalDetalles.querySelector('.detail-item .subject-tag').textContent = apunte.materia || 'N/A';
-      modalDetalles.querySelector('.detail-item:nth-child(2) span').textContent = apunte.semestre || 'N/A';
+      // Actualizar materia y semestre
+      modal.querySelector('.subject-tag').textContent = apunte.materia || 'N/A';
+      modal.querySelector('.detail-item:nth-child(2) span').textContent = apunte.semestre || 'N/A';
 
-      // Llenar etiquetas (un poco más complejo porque son varias)
-      const etiquetasContainer = modalDetalles.querySelector('.labels-container');
-      etiquetasContainer.innerHTML = ''; // Limpiamos las etiquetas anteriores
-
-      if (apunte.etiquetas && apunte.etiquetas.length > 0) {
-        const etiquetasArray = apunte.etiquetas.split(','); // Asumimos que están separadas por coma
+      // Actualizar etiquetas
+      const etiquetasContainer = modal.querySelector('.labels-container');
+      etiquetasContainer.innerHTML = '';
+      if (apunte.etiquetas && apunte.etiquetas.trim()) {
+        const etiquetasArray = apunte.etiquetas.split(',');
         etiquetasArray.forEach(tag => {
-          if (tag.trim() === "") return; // Ignoramos etiquetas vacías
-          const span = document.createElement('span');
-          span.className = 'label-tag';
-          span.textContent = tag.trim();
-          etiquetasContainer.appendChild(span);
+          if (tag.trim()) {
+            const span = document.createElement('span');
+            span.className = 'label-tag';
+            span.textContent = tag.trim();
+            etiquetasContainer.appendChild(span);
+          }
         });
       } else {
         etiquetasContainer.innerHTML = '<span class="label-tag">Sin etiquetas</span>';
       }
 
-      // TODO: Aquí deberías agregar la lógica para cargar los comentarios de este apunte
-      // const commentList = document.getElementById("comment-list");
-      // commentList.innerHTML = ''; // Limpiar comentarios
-      // fetch(`../backend/getComments.php?id=${apunte.id}`).then(...)
 
-      // Finalmente, mostramos el modal
-      // Dentro de la función abrirModalDetalles(apunte)
+      // Configurar enlace de descarga
 
-      // Obtenemos el nuevo enlace por su ID
+      //console.log("Ruta desde la BD:", apunte.ruta_archivo);
       const downloadLink = document.getElementById('downloadLink');
+      if (downloadLink && apunte.ruta_archivo) {
+        //CAmbiar ruta segun tu configuracion de carpetas
+        const rutaBase = window.location.origin + '/colaborativo/biblio-tech/';
+        const rutaCompleta = rutaBase + apunte.ruta_archivo;
+        const extension = apunte.ruta_archivo.split('.').pop();
+        const nombreArchivo = `${apunte.titulo}.${extension}`;
 
-      const rutaBase = window.location.origin + '/biblio-tech/';
-      const rutaCompleta = rutaBase + apunte.ruta_archivo;
-      const nombreArchivo = apunte.titulo + '.' + apunte.ruta_archivo.split('.').pop(); // Nombre para la descarga
-
-      if (downloadLink) {
+        console.log("Ruta completa:", rutaCompleta);
         downloadLink.href = rutaCompleta;
-        downloadLink.download = nombreArchivo; // Sugiere un nombre de archivo para el usuario
+        downloadLink.download = nombreArchivo;
       }
 
-      // Finalmente, mostramos el modal
-      modalDetalles.classList.add('visible');
-      modalDetalles.classList.add('visible');
+      // Configurar rating
+      const ratingContainer = modal.querySelector('.rating');
+      console.log("id apunte:", apunte.idApuntes);
+      if (ratingContainer && apunte.idApuntes) {
+        ratingContainer.dataset.apunteId = apunte.idApuntes; // Esto asigna el ID real
+        initStars(); // Inicializar sistema de estrellas
+      }
+
+      // Cargar comentarios
+      cargarComentarios(apunte.idApuntes);
+
+      // Asignar apunte actual al botón
+      document.getElementById("send-comment").dataset.apunteId = apunte.idApuntes;
+
+      modal.classList.add('visible');
     }
 
-    // 3. Función para CERRAR el modal
-    const closeModal = () => {
-      modalDetalles.classList.remove('visible');
+    function formatearFecha(fechaStr) {
+      try {
+        const parts = fechaStr.split(' ')[0].split('-');
+        const fecha = new Date(parts[0], parseInt(parts[1]) - 1, parts[2]);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return fecha.toLocaleDateString('es-ES', options);
+      } catch (e) {
+        return fechaStr;
+      }
     }
 
-    // 4. Asignamos los eventos de CIERRE
-    if (closeModalBtn) {
-      closeModalBtn.addEventListener('click', closeModal);
+    // Sistema de Rating - Funciones principales
+    function initStars() {
+      document.querySelectorAll(".rating").forEach(container => {
+        const apunteId = container.dataset.apunteId;
+        if (!apunteId) return;
+
+        cargarRatingActual(container, apunteId);
+
+        container.querySelectorAll(".star").forEach(star => {
+          star.addEventListener("click", () => calificarApunte(star, apunteId));
+
+          // Efectos hover
+          star.addEventListener("mouseenter", () => {
+            const value = parseInt(star.dataset.value);
+            resaltarEstrellasHover(container, value);
+          });
+
+          star.addEventListener("mouseleave", () => {
+            restaurarEstrellas(container);
+          });
+        });
+      });
     }
-    if (modalDetalles) {
-      modalDetalles.addEventListener('click', (event) => {
-        // Solo cierra si el clic fue directamente en el fondo
-        if (event.target === modalDetalles) {
-          closeModal();
+
+    async function calificarApunte(starElement, apunteId) {
+      const rating = parseInt(starElement.dataset.value);
+      const userId = localStorage.getItem("user_id");
+
+      console.log("Valor de la estrella:", rating);
+
+      if (!userId) {
+        alert("Debes iniciar sesión para calificar");
+        return;
+      }
+
+      try {
+        const response = await fetch("../backend/controllers/RatingController.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: parseInt(userId),
+            apunte_id: parseInt(apunteId),
+            rating: rating
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          const container = starElement.closest(".rating");
+          actualizarInterfazRating(container, data);
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error de conexión");
+      }
+    }
+
+    async function cargarRatingActual(container, apunteId) {
+      const userId = localStorage.getItem("user_id");
+
+      try {
+        const params = new URLSearchParams({
+          apunte_id: apunteId,
+          user_id: userId || ''
+        });
+
+        const response = await fetch(`../backend/controllers/RatingController.php?${params}`);
+
+        const data = await response.json();
+
+        if (data.success) {
+          actualizarInterfazRating(container, data);
+        }
+      } catch (error) {
+        console.error("Error al cargar rating:", error);
+      }
+    }
+
+    function actualizarInterfazRating(container, data) {
+      const average = parseFloat(data.average) || 0;
+      const voteCount = parseInt(data.vote_count) || 0;
+      const userRating = parseInt(data.user_rating) || 0;
+
+      // Guardar datos en el container
+      container.dataset.average = average;
+      container.dataset.userRating = userRating;
+      container.dataset.voteCount = voteCount;
+
+      // Actualizar estrellas
+      restaurarEstrellas(container);
+
+      // Actualizar texto
+      const avgText = container.querySelector(".avg-text");
+      if (avgText) {
+        avgText.textContent = `(${average.toFixed(1)} ⭐ — ${voteCount} ${voteCount === 1 ? 'voto' : 'votos'})`;
+      }
+    }
+
+    function resaltarEstrellasHover(container, rating) {
+      const stars = container.querySelectorAll(".star");
+      stars.forEach(star => {
+        star.classList.remove('hover');
+        const value = parseInt(star.dataset.value);
+        if (value <= rating) {
+          star.classList.add('hover');
         }
       });
     }
 
-    // 5. Lógica para los comentarios (la que ya tenías)
-    const commentList = document.getElementById("comment-list");
-    const sendBtn = document.getElementById("send-comment");
-    const input = document.getElementById("comment-input");
+    function restaurarEstrellas(container) {
+      const stars = container.querySelectorAll(".star");
+      const userRating = parseInt(container.dataset.userRating) || 0;
+      const average = parseFloat(container.dataset.average) || 0;
 
-    if (sendBtn) {
-      sendBtn.addEventListener("click", () => {
-        const text = input.value.trim();
-        if (text !== "") {
-          addComment("Tú", text); // TODO: Aquí deberías guardar el comentario en la BD
-          input.value = "";
+      stars.forEach(star => {
+        star.classList.remove('active', 'user-rated', 'hover');
+        const value = parseInt(star.dataset.value);
+
+        if (userRating > 0 && value <= userRating) {
+          star.classList.add('user-rated');
+        } else if (value <= Math.floor(average)) {
+          star.classList.add('active');
         }
       });
     }
 
-    function addComment(author, text) {
-      const li = document.createElement("li");
-      // (Sería mejor usar la estructura HTML que ya tienes en 'comment-item')
-      li.innerHTML = `<strong>${author}:</strong> ${text}`;
-      commentList.appendChild(li);
+    async function cargarComentarios(apunteId) {
+      const list = document.getElementById("comment-list");
+      list.innerHTML = "<p>Cargando comentarios...</p>";
+
+      try {
+        const res = await fetch(`../backend/controllers/commentController.php?apunte_id=${apunteId}`);
+        const data = await res.json();
+
+        if (!data.success || data.data.length === 0) {
+          list.innerHTML = "<p style='color:#777'>No hay comentarios aún.</p>";
+          return;
+        }
+
+        list.innerHTML = "";
+
+        data.data.forEach(c => {
+          const li = document.createElement("li");
+          li.classList.add("comment-item");
+          li.innerHTML = `
+            <div class="comment-header">
+              <div class="comment-user">
+                <strong>${c.nombre} ${c.apellido_paterno}</strong>
+              </div>
+              <span class="comment-date">${formatFecha(c.fecha_comentario)}</span>
+            </div>
+
+            <div class="comment-body">
+              <p>${c.contenido}</p>
+            </div>
+            `;
+          list.appendChild(li);
+        });
+
+        document.getElementById("commentCountText").textContent = data.data.length;
+
+      } catch (e) {
+        console.error("Error:", e);
+        list.innerHTML = "<p style='color:red'>Error cargando comentarios</p>";
+      }
+    }
+    document.getElementById("send-comment").addEventListener("click", async () => {
+      const userId = localStorage.getItem("user_id");
+      const apunteId = event.target.dataset.apunteId;
+      const comentario = document.getElementById("comment-input").value.trim();
+
+      if (!userId) return alert("Debes iniciar sesión");
+      if (comentario.length < 2) return alert("Comentario muy corto");
+
+      try {
+        const res = await fetch("../backend/controllers/commentController.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: userId,
+            apunte_id: apunteId,
+            contenido: comentario
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById("comment-input").value = "";
+          cargarComentarios(apunteId); // recargar lista
+        } else {
+          alert(data.message);
+        }
+
+      } catch (e) {
+        console.error(e);
+        alert("Error de conexión");
+      }
+    });
+
+
+    function formatFecha(f) {
+      const d = new Date(f);
+      return d.toLocaleString("es-ES", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+    // === DROPZONE ===
+    function initDropzone() {
+      const dz = document.getElementById('dropzone');
+      const fi = document.getElementById('fileInput');
+      const dzName = document.getElementById('dzFileName');
+      const dzSize = document.getElementById('dzFileSize');
+      const dzChangeBtn = document.getElementById('dzChangeBtn');
+
+      if (!dz || !fi) return;
+
+      // Prevenir eventos por defecto en el dropzone
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dz.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      });
+
+      // Añadir clase visual al arrastrar
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dz.addEventListener(eventName, () => {
+          dz.classList.add('is-dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dz.addEventListener(eventName, () => {
+          dz.classList.remove('is-dragover');
+        });
+      });
+
+      // Manejar drop
+      dz.addEventListener('drop', (e) => {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          fi.files = files;
+          setDropzoneFile(files[0]);
+        }
+      });
+
+      // Click en el dropzone (solo si no es el botón de cambiar)
+      dz.addEventListener('click', (e) => {
+        // Si el click fue en el botón de cambiar o sus hijos, no hacer nada
+        if (e.target === dzChangeBtn || dzChangeBtn.contains(e.target)) {
+          return;
+        }
+        fi.click();
+      });
+
+      // Change en el input de archivo
+      fi.addEventListener('change', () => {
+        if (fi.files && fi.files[0]) {
+          setDropzoneFile(fi.files[0]);
+        }
+      });
+
+      // Botón de cambiar archivo
+      dzChangeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        fi.click();
+      });
     }
 
-    // =================== FIN DEL NUEVO CÓDIGO ===================
+    function setDropzoneFile(file) {
+      selectedFile = file;
+      const dz = document.getElementById('dropzone');
+      const dzName = document.getElementById('dzFileName');
+      const dzSize = document.getElementById('dzFileSize');
+
+      dz.classList.add('has-file');
+      dzName.textContent = file.name;
+      dzSize.textContent = `(${formatBytes(file.size)})`;
+    }
+
+    function resetDropzoneUI() {
+      selectedFile = null;
+      const dz = document.getElementById('dropzone');
+      const fi = document.getElementById('fileInput');
+      const dzName = document.getElementById('dzFileName');
+      const dzSize = document.getElementById('dzFileSize');
+
+      dz.classList.remove('has-file', 'is-dragover');
+      dzName.textContent = 'Archivo seleccionado';
+      dzSize.textContent = '(0 B)';
+      fi.value = '';
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    // === FORMULARIO ===
+    function initForm() {
+      const form = document.getElementById('formUpload');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await handleFormSubmit();
+      });
+    }
+
+    async function handleFormSubmit() {
+      const formMsg = document.getElementById('formMsg');
+      const fi = document.getElementById('fileInput');
+
+      formMsg.style.display = 'none';
+
+      // Validar archivo
+      if (!fi.files || !fi.files[0]) {
+        showFormMsg('Por favor selecciona un archivo.', false);
+        return;
+      }
+
+      const file = fi.files[0];
+
+      // Validar extensión
+      const allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx'];
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (!allowed.includes(ext)) {
+        showFormMsg('Formato no permitido. Usa PDF, DOC, DOCX, PPT o PPTX.', false);
+        return;
+      }
+
+      // Validar tamaño
+      if (file.size > 25 * 1024 * 1024) {
+        showFormMsg('El archivo excede el tamaño máximo de 25 MB.', false);
+        return;
+      }
+
+      // Crear FormData
+      const formData = new FormData();
+      formData.append('archivo', file);
+      formData.append('titulo', document.getElementById('titulo').value.trim());
+      formData.append('descripcion', document.getElementById('descripcion').value.trim());
+      formData.append('materia', document.getElementById('materia').value);
+      formData.append('semestre', document.getElementById('semestre').value);
+      formData.append('universidad', document.getElementById('universidad').value.trim());
+      formData.append('carrera', document.getElementById('carrera').value.trim());
+      formData.append('etiquetas', document.getElementById('etiquetas').value.trim());
+
+      try {
+        showFormMsg('Subiendo documento...', true);
+
+        const res = await fetch(UPLOAD_URL, {
+          method: 'POST',
+          body: formData
+        });
+
+        const contentType = res.headers.get('content-type') || '';
+
+        if (!contentType.includes('application/json')) {
+          const text = await res.text();
+          console.error('Respuesta del servidor:', text);
+          showFormMsg('Error: El servidor no devolvió JSON. Revisa la consola.', false);
+          return;
+        }
+
+        const json = await res.json();
+
+        if (json.success) {
+          showFormMsg('¡Documento subido correctamente!', true);
+          setTimeout(() => {
+            cerrarSubida();
+            showTopMsg('Tu apunte se ha publicado correctamente.', true);
+            cargarApuntes(); // Recargar la lista
+          }, 1000);
+        } else {
+          showFormMsg(json.message || 'No se pudo subir el documento.', false);
+        }
+      } catch (err) {
+        console.error('Error al subir:', err);
+        showFormMsg('Error de conexión: ' + err.message, false);
+      }
+    }
+
+    function showFormMsg(msg, ok) {
+      const formMsg = document.getElementById('formMsg');
+      formMsg.textContent = msg;
+      formMsg.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
+      formMsg.style.display = 'block';
+    }
+
     function showTopMsg(msg, ok) {
       const box = document.getElementById('uploadMsg');
       box.textContent = msg;
       box.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
       box.style.display = 'block';
       setTimeout(() => box.style.display = 'none', 3000);
-
-      // 🔽 ================== AGREGA ESTO ================== 🔽
-      // Si el mensaje fue de éxito (ok es true), recargamos los apuntes
-      if (ok) {
-        setTimeout(() => {
-          cargarApuntes(); // ¡La función mágica!
-        }, 1000); // Esperamos 1 segundo para que dé tiempo de ver el msg
-      }
-      // 🔼 ================== FIN DE LA ADICIÓN ================== 🔼
     }
 
-    // Abrir/Cerrar modal
-    function abrirSubida() { document.getElementById('modalUpload').setAttribute('aria-hidden', 'false'); }
+    // === MODAL CONTROL ===
+    function abrirSubida() {
+      document.getElementById('modalUpload').setAttribute('aria-hidden', 'false');
+    }
+
     function cerrarSubida() {
       document.getElementById('modalUpload').setAttribute('aria-hidden', 'true');
+      resetDropzoneUI();
       document.getElementById('formUpload').reset();
       document.getElementById('formMsg').style.display = 'none';
     }
 
-    // Efecto drag&drop
-    const dz = document.getElementById('dropzone');
-    const fi = document.getElementById('fileInput');
-    if (dz && fi) {
-      ['dragenter', 'dragover'].forEach(evt =>
-        dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.add('is-dragover'); })
-      );
-      ['dragleave', 'drop'].forEach(evt =>
-        dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.remove('is-dragover'); })
-      );
-      dz.addEventListener('drop', e => { fi.files = e.dataTransfer.files; });
-      dz.addEventListener('click', () => fi.click());
-    }
 
-    // Logout
+
+    // === LOGOUT ===
     function logout() {
       fetch('../backend/controllers/authController.php?action=logout', { method: 'POST' })
-        .then(() => window.location.href = 'login.html');
+        .then(() => window.location.href = 'login.html')
+        .catch(err => {
+          console.error('Error al cerrar sesión:', err);
+          window.location.href = 'login.html';
+        });
     }
-
-    // Manejo del submit (multipart/form-data)
-    const form = document.getElementById('formUpload');
-    const formMsg = document.getElementById('formMsg');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      formMsg.style.display = 'none';
-
-      const file = fi.files && fi.files[0];
-      if (!file) {
-        showFormMsg('Selecciona un archivo.', false);
-        return;
-      }
-
-      // Validaciones front
-      const allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx'];
-      const ext = file.name.split('.').pop().toLowerCase();
-      if (!allowed.includes(ext)) {
-        showFormMsg('Formato no permitido. Usa PDF, DOC, DOCX, PPT o PPTX.', false); return;
-      }
-      if (file.size > 25 * 1024 * 1024) {
-        showFormMsg('Archivo mayor a 25 MB.', false); return;
-      }
-
-      const data = new FormData();
-      data.append('archivo', file);
-      data.append('titulo', document.getElementById('titulo').value.trim());
-      data.append('descripcion', document.getElementById('descripcion').value.trim());
-      data.append('materia', document.getElementById('materia').value);
-      data.append('semestre', document.getElementById('semestre').value);
-      data.append('universidad', document.getElementById('universidad').value.trim());
-      data.append('carrera', document.getElementById('carrera').value.trim());
-      data.append('etiquetas', document.getElementById('etiquetas').value.trim());
-
-      try {
-        const res = await fetch(UPLOAD_URL, { method: 'POST', body: data });
-        const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) {
-          const txt = await res.text();
-          showFormMsg('Respuesta no JSON del servidor: ' + txt.slice(0, 140) + '...', false);
-          return;
-        }
-        const json = await res.json();
-        if (json.success) {
-          showFormMsg('Documento subido correctamente.', true);
-          setTimeout(() => { cerrarSubida(); showTopMsg('Se guardó tu apunte.', true); }, 900);
-        } else {
-          showFormMsg(json.message || 'No se pudo subir el documento.', false);
-        }
-      } catch (err) {
-        showFormMsg('Error de red: ' + err.message, false);
-      }
-    });
-
-    function showFormMsg(msg, ok) {
-      formMsg.textContent = msg;
-      formMsg.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
-      formMsg.style.display = 'block';
-    }
-    // function showTopMsg(msg, ok) {
-    //   const box = document.getElementById('uploadMsg');
-    //   box.textContent = msg;
-    //   box.className = 'alert ' + (ok ? 'alert-ok' : 'alert-err');
-    //   box.style.display = 'block';
-    //   setTimeout(() => box.style.display = 'none', 3000);
-    // }
   </script>
 </body>
 
