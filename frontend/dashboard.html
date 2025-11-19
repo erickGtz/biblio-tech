@@ -188,39 +188,90 @@
     }
 
     .rating {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
 
-.rating .star {
-    font-size: 20px;
-    color: #ddd;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+    .rating .star {
+      font-size: 20px;
+      color: #ddd;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-.rating .star:hover {
-    transform: scale(1.2);
-}
+    .rating .star:hover {
+      transform: scale(1.2);
+    }
 
-.rating .star.hover {
-    color: #ffc107;
-}
+    .rating .star.hover {
+      color: #ffc107;
+    }
 
-.rating .star.active {
-    color: #ffc107;
-}
+    .rating .star.active {
+      color: #ffc107;
+    }
 
-.rating .star.user-rated {
-    color: #ff6b35;
-}
+    .rating .star.user-rated {
+      color: #ff6b35;
+    }
 
-.rating .avg-text {
-    margin-left: 8px;
-    font-size: 12px;
-    color: #666;
-}
+    .rating .avg-text {
+      margin-left: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Contenedor principal de cada comentario */
+    #comment-list .comment-item {
+      list-style: none;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
+    }
+
+    /* Efecto hover moderno */
+    #comment-list .comment-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Encabezado (nombre + fecha) */
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* Nombre */
+    .comment-user strong {
+      font-size: 15px;
+      color: #1f2937;
+    }
+
+    /* Fecha */
+    .comment-date {
+      font-size: 13px;
+      color: #6b7280;
+      /* gris elegante */
+    }
+
+    /* Cuerpo del comentario */
+    .comment-body p {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.5;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 
@@ -434,7 +485,7 @@
     // === CONFIGURACIÓN ===
     const UPLOAD_URL = '../backend/controllers/uploadController.php';
     const GET_APUNTES_URL = '../backend/controllers/obtainController.php';
-    
+
     // Log para debug
     console.log('🔧 Rutas configuradas:');
     console.log('  - Upload:', UPLOAD_URL);
@@ -500,7 +551,7 @@
             <p class="apunte-descripcion">${apunte.descripcion || 'Sin descripción'}</p>
             <p class="apunte-etiquetas">${apunte.etiquetas || 'Sin etiquetas'} • ${apunte.carrera || ''}</p>
           `;
-          
+
           card.addEventListener('click', () => abrirModalDetalles(apunte));
           grid.appendChild(card);
         });
@@ -532,14 +583,14 @@
 
     function abrirModalDetalles(apunte) {
       const modal = document.getElementById('document-modal');
-      
+
       // Actualizar título
-      modal.querySelector('.document-card h2').innerHTML = 
+      modal.querySelector('.document-card h2').innerHTML =
         `<i class="bi bi-file-earmark-text-fill"></i> ${apunte.titulo || 'Sin título'}`;
-      
+
       // Actualizar descripción
       modal.querySelector('.description').textContent = apunte.descripcion || 'Sin descripción';
-      
+
       // Actualizar autor y fecha
       const authorEl = modal.querySelector('p.author');
       const avatar = apunte.avatar_usuario || 'https://i.pravatar.cc/30';
@@ -548,11 +599,11 @@
         <img src="${avatar}" alt="autor">
         ${apunte.nombre_usuario || 'Autor Desconocido'} • ${fechaFormateada}
       `;
-      
+
       // Actualizar materia y semestre
       modal.querySelector('.subject-tag').textContent = apunte.materia || 'N/A';
       modal.querySelector('.detail-item:nth-child(2) span').textContent = apunte.semestre || 'N/A';
-      
+
       // Actualizar etiquetas
       const etiquetasContainer = modal.querySelector('.labels-container');
       etiquetasContainer.innerHTML = '';
@@ -569,38 +620,40 @@
       } else {
         etiquetasContainer.innerHTML = '<span class="label-tag">Sin etiquetas</span>';
       }
-      
-      
+
+
       // Configurar enlace de descarga
 
       //console.log("Ruta desde la BD:", apunte.ruta_archivo);
       const downloadLink = document.getElementById('downloadLink');
       if (downloadLink && apunte.ruta_archivo) {
-        //CAmbiar ruta segun tu configuracion de carpetas 
+        //CAmbiar ruta segun tu configuracion de carpetas
         const rutaBase = window.location.origin + '/colaborativo/biblio-tech/';
         const rutaCompleta = rutaBase + apunte.ruta_archivo;
         const extension = apunte.ruta_archivo.split('.').pop();
         const nombreArchivo = `${apunte.titulo}.${extension}`;
-        
+
         console.log("Ruta completa:", rutaCompleta);
         downloadLink.href = rutaCompleta;
         downloadLink.download = nombreArchivo;
       }
 
       // Configurar rating
-    const ratingContainer = modal.querySelector('.rating');
-    console.log("id apunte:", apunte.idApuntes);
-    if (ratingContainer && apunte.idApuntes) {
-      ratingContainer.dataset.apunteId = apunte.idApuntes; // Esto asigna el ID real
-      initStars(); // Inicializar sistema de estrellas
-  }
+      const ratingContainer = modal.querySelector('.rating');
+      console.log("id apunte:", apunte.idApuntes);
+      if (ratingContainer && apunte.idApuntes) {
+        ratingContainer.dataset.apunteId = apunte.idApuntes; // Esto asigna el ID real
+        initStars(); // Inicializar sistema de estrellas
+      }
 
-    
-    modal.classList.add('visible');
-}
-      
-     
-    
+      // Cargar comentarios
+      cargarComentarios(apunte.idApuntes);
+
+      // Asignar apunte actual al botón
+      document.getElementById("send-comment").dataset.apunteId = apunte.idApuntes;
+
+      modal.classList.add('visible');
+    }
 
     function formatearFecha(fechaStr) {
       try {
@@ -613,136 +666,220 @@
       }
     }
 
-// Sistema de Rating - Funciones principales
-function initStars() {
-    document.querySelectorAll(".rating").forEach(container => {
+    // Sistema de Rating - Funciones principales
+    function initStars() {
+      document.querySelectorAll(".rating").forEach(container => {
         const apunteId = container.dataset.apunteId;
         if (!apunteId) return;
 
         cargarRatingActual(container, apunteId);
-        
-        container.querySelectorAll(".star").forEach(star => {
-            star.addEventListener("click", () => calificarApunte(star, apunteId));
-            
-            // Efectos hover
-            star.addEventListener("mouseenter", () => {
-                const value = parseInt(star.dataset.value);
-                resaltarEstrellasHover(container, value);
-            });
-            
-            star.addEventListener("mouseleave", () => {
-                restaurarEstrellas(container);
-            });
-        });
-    });
-}
 
-async function calificarApunte(starElement, apunteId) {
-    const rating = parseInt(starElement.dataset.value);
-    const userId = localStorage.getItem("user_id");
-     
-     console.log("Valor de la estrella:", rating);
-    
-    if (!userId) {
+        container.querySelectorAll(".star").forEach(star => {
+          star.addEventListener("click", () => calificarApunte(star, apunteId));
+
+          // Efectos hover
+          star.addEventListener("mouseenter", () => {
+            const value = parseInt(star.dataset.value);
+            resaltarEstrellasHover(container, value);
+          });
+
+          star.addEventListener("mouseleave", () => {
+            restaurarEstrellas(container);
+          });
+        });
+      });
+    }
+
+    async function calificarApunte(starElement, apunteId) {
+      const rating = parseInt(starElement.dataset.value);
+      const userId = localStorage.getItem("user_id");
+
+      console.log("Valor de la estrella:", rating);
+
+      if (!userId) {
         alert("Debes iniciar sesión para calificar");
         return;
-    }
+      }
 
-    try {
+      try {
         const response = await fetch("../backend/controllers/RatingController.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                user_id: parseInt(userId),
-                apunte_id: parseInt(apunteId),
-                rating: rating
-            })
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: parseInt(userId),
+            apunte_id: parseInt(apunteId),
+            rating: rating
+          })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
-            const container = starElement.closest(".rating");
-            actualizarInterfazRating(container, data);
+          const container = starElement.closest(".rating");
+          actualizarInterfazRating(container, data);
         } else {
-            alert(data.message);
+          alert(data.message);
         }
-    } catch (error) {
+      } catch (error) {
         console.error("Error:", error);
         alert("Error de conexión");
+      }
     }
-}
 
-async function cargarRatingActual(container, apunteId) {
-    const userId = localStorage.getItem("user_id");
-    
-    try {
+    async function cargarRatingActual(container, apunteId) {
+      const userId = localStorage.getItem("user_id");
+
+      try {
         const params = new URLSearchParams({
-            apunte_id: apunteId,
-            user_id: userId || ''
+          apunte_id: apunteId,
+          user_id: userId || ''
         });
-        
+
         const response = await fetch(`../backend/controllers/RatingController.php?${params}`);
 
         const data = await response.json();
-        
+
         if (data.success) {
-            actualizarInterfazRating(container, data);
+          actualizarInterfazRating(container, data);
         }
-    } catch (error) {
+      } catch (error) {
         console.error("Error al cargar rating:", error);
+      }
     }
-}
 
-function actualizarInterfazRating(container, data) {
-    const average = parseFloat(data.average) || 0;
-    const voteCount = parseInt(data.vote_count) || 0;
-    const userRating = parseInt(data.user_rating) || 0;
-    
-    // Guardar datos en el container
-    container.dataset.average = average;
-    container.dataset.userRating = userRating;
-    container.dataset.voteCount = voteCount;
-    
-    // Actualizar estrellas
-    restaurarEstrellas(container);
-    
-    // Actualizar texto
-    const avgText = container.querySelector(".avg-text");
-    if (avgText) {
+    function actualizarInterfazRating(container, data) {
+      const average = parseFloat(data.average) || 0;
+      const voteCount = parseInt(data.vote_count) || 0;
+      const userRating = parseInt(data.user_rating) || 0;
+
+      // Guardar datos en el container
+      container.dataset.average = average;
+      container.dataset.userRating = userRating;
+      container.dataset.voteCount = voteCount;
+
+      // Actualizar estrellas
+      restaurarEstrellas(container);
+
+      // Actualizar texto
+      const avgText = container.querySelector(".avg-text");
+      if (avgText) {
         avgText.textContent = `(${average.toFixed(1)} ⭐ — ${voteCount} ${voteCount === 1 ? 'voto' : 'votos'})`;
+      }
     }
-}
 
-function resaltarEstrellasHover(container, rating) {
-    const stars = container.querySelectorAll(".star");
-    stars.forEach(star => {
+    function resaltarEstrellasHover(container, rating) {
+      const stars = container.querySelectorAll(".star");
+      stars.forEach(star => {
         star.classList.remove('hover');
         const value = parseInt(star.dataset.value);
         if (value <= rating) {
-            star.classList.add('hover');
+          star.classList.add('hover');
         }
-    });
-}
+      });
+    }
 
-function restaurarEstrellas(container) {
-    const stars = container.querySelectorAll(".star");
-    const userRating = parseInt(container.dataset.userRating) || 0;
-    const average = parseFloat(container.dataset.average) || 0;
-    
-    stars.forEach(star => {
+    function restaurarEstrellas(container) {
+      const stars = container.querySelectorAll(".star");
+      const userRating = parseInt(container.dataset.userRating) || 0;
+      const average = parseFloat(container.dataset.average) || 0;
+
+      stars.forEach(star => {
         star.classList.remove('active', 'user-rated', 'hover');
         const value = parseInt(star.dataset.value);
-        
+
         if (userRating > 0 && value <= userRating) {
-            star.classList.add('user-rated');
+          star.classList.add('user-rated');
         } else if (value <= Math.floor(average)) {
-            star.classList.add('active');
+          star.classList.add('active');
         }
+      });
+    }
+
+    async function cargarComentarios(apunteId) {
+      const list = document.getElementById("comment-list");
+      list.innerHTML = "<p>Cargando comentarios...</p>";
+
+      try {
+        const res = await fetch(`../backend/controllers/commentController.php?apunte_id=${apunteId}`);
+        const data = await res.json();
+
+        if (!data.success || data.data.length === 0) {
+          list.innerHTML = "<p style='color:#777'>No hay comentarios aún.</p>";
+          return;
+        }
+
+        list.innerHTML = "";
+
+        data.data.forEach(c => {
+          const li = document.createElement("li");
+          li.classList.add("comment-item");
+          li.innerHTML = `
+            <div class="comment-header">
+              <div class="comment-user">
+                <strong>${c.nombre} ${c.apellido_paterno}</strong>
+              </div>
+              <span class="comment-date">${formatFecha(c.fecha_comentario)}</span>
+            </div>
+
+            <div class="comment-body">
+              <p>${c.contenido}</p>
+            </div>
+            `;
+          list.appendChild(li);
+        });
+
+        document.getElementById("commentCountText").textContent = data.data.length;
+
+      } catch (e) {
+        console.error("Error:", e);
+        list.innerHTML = "<p style='color:red'>Error cargando comentarios</p>";
+      }
+    }
+    document.getElementById("send-comment").addEventListener("click", async () => {
+      const userId = localStorage.getItem("user_id");
+      const apunteId = event.target.dataset.apunteId;
+      const comentario = document.getElementById("comment-input").value.trim();
+
+      if (!userId) return alert("Debes iniciar sesión");
+      if (comentario.length < 2) return alert("Comentario muy corto");
+
+      try {
+        const res = await fetch("../backend/controllers/commentController.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: userId,
+            apunte_id: apunteId,
+            contenido: comentario
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById("comment-input").value = "";
+          cargarComentarios(apunteId); // recargar lista
+        } else {
+          alert(data.message);
+        }
+
+      } catch (e) {
+        console.error(e);
+        alert("Error de conexión");
+      }
     });
-}
 
 
+    function formatFecha(f) {
+      const d = new Date(f);
+      return d.toLocaleString("es-ES", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
     // === DROPZONE ===
     function initDropzone() {
       const dz = document.getElementById('dropzone');
@@ -812,7 +949,7 @@ function restaurarEstrellas(container) {
       const dz = document.getElementById('dropzone');
       const dzName = document.getElementById('dzFileName');
       const dzSize = document.getElementById('dzFileSize');
-      
+
       dz.classList.add('has-file');
       dzName.textContent = file.name;
       dzSize.textContent = `(${formatBytes(file.size)})`;
@@ -824,7 +961,7 @@ function restaurarEstrellas(container) {
       const fi = document.getElementById('fileInput');
       const dzName = document.getElementById('dzFileName');
       const dzSize = document.getElementById('dzFileSize');
-      
+
       dz.classList.remove('has-file', 'is-dragover');
       dzName.textContent = 'Archivo seleccionado';
       dzSize.textContent = '(0 B)';
@@ -842,7 +979,7 @@ function restaurarEstrellas(container) {
     // === FORMULARIO ===
     function initForm() {
       const form = document.getElementById('formUpload');
-      
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         await handleFormSubmit();
@@ -852,7 +989,7 @@ function restaurarEstrellas(container) {
     async function handleFormSubmit() {
       const formMsg = document.getElementById('formMsg');
       const fi = document.getElementById('fileInput');
-      
+
       formMsg.style.display = 'none';
 
       // Validar archivo
@@ -862,7 +999,7 @@ function restaurarEstrellas(container) {
       }
 
       const file = fi.files[0];
-      
+
       // Validar extensión
       const allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx'];
       const ext = file.name.split('.').pop().toLowerCase();
@@ -890,14 +1027,14 @@ function restaurarEstrellas(container) {
 
       try {
         showFormMsg('Subiendo documento...', true);
-        
+
         const res = await fetch(UPLOAD_URL, {
           method: 'POST',
           body: formData
         });
 
         const contentType = res.headers.get('content-type') || '';
-        
+
         if (!contentType.includes('application/json')) {
           const text = await res.text();
           console.error('Respuesta del servidor:', text);
@@ -906,7 +1043,7 @@ function restaurarEstrellas(container) {
         }
 
         const json = await res.json();
-        
+
         if (json.success) {
           showFormMsg('¡Documento subido correctamente!', true);
           setTimeout(() => {
@@ -950,7 +1087,7 @@ function restaurarEstrellas(container) {
       document.getElementById('formMsg').style.display = 'none';
     }
 
-    
+
 
     // === LOGOUT ===
     function logout() {
