@@ -186,6 +186,41 @@
       color: #991b1b;
       border: 1px solid #ef4444
     }
+
+    .rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.rating .star {
+    font-size: 20px;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rating .star:hover {
+    transform: scale(1.2);
+}
+
+.rating .star.hover {
+    color: #ffc107;
+}
+
+.rating .star.active {
+    color: #ffc107;
+}
+
+.rating .star.user-rated {
+    color: #ff6b35;
+}
+
+.rating .avg-text {
+    margin-left: 8px;
+    font-size: 12px;
+    color: #666;
+}
   </style>
 </head>
 
@@ -365,8 +400,14 @@
             <div class="rating-section">
               <div class="rating-line">
                 <strong>Puntuación</strong>
-                <div class="stars" id="stars">
-                  <span class="rating-text">⭐⭐⭐⭐☆ 4.0 (25 puntuaciones)</span>
+                <div class="rating" data-apunte-id="">
+                  <span class="star" data-value="1">★</span>
+                  <span class="star" data-value="2">★</span>
+                  <span class="star" data-value="3">★</span>
+                  <span class="star" data-value="4">★</span>
+                  <span class="star" data-value="5">★</span>
+
+                  <span class="avg-text">(0.0 ⭐ — 0 votos)</span>
                 </div>
               </div>
             </div>
@@ -529,6 +570,7 @@
         etiquetasContainer.innerHTML = '<span class="label-tag">Sin etiquetas</span>';
       }
       
+      
       // Configurar enlace de descarga
 
       //console.log("Ruta desde la BD:", apunte.ruta_archivo);
@@ -544,9 +586,21 @@
         downloadLink.href = rutaCompleta;
         downloadLink.download = nombreArchivo;
       }
+
+      // Configurar rating
+    const ratingContainer = modal.querySelector('.rating');
+    console.log("id apunte:", apunte.idApuntes);
+    if (ratingContainer && apunte.idApuntes) {
+      ratingContainer.dataset.apunteId = apunte.idApuntes; // Esto asigna el ID real
+      initStars(); // Inicializar sistema de estrellas
+  }
+
+    
+    modal.classList.add('visible');
+}
       
-      modal.classList.add('visible');
-    }
+     
+    
 
     function formatearFecha(fechaStr) {
       try {
@@ -558,6 +612,136 @@
         return fechaStr;
       }
     }
+
+// Sistema de Rating - Funciones principales
+function initStars() {
+    document.querySelectorAll(".rating").forEach(container => {
+        const apunteId = container.dataset.apunteId;
+        if (!apunteId) return;
+
+        cargarRatingActual(container, apunteId);
+        
+        container.querySelectorAll(".star").forEach(star => {
+            star.addEventListener("click", () => calificarApunte(star, apunteId));
+            
+            // Efectos hover
+            star.addEventListener("mouseenter", () => {
+                const value = parseInt(star.dataset.value);
+                resaltarEstrellasHover(container, value);
+            });
+            
+            star.addEventListener("mouseleave", () => {
+                restaurarEstrellas(container);
+            });
+        });
+    });
+}
+
+async function calificarApunte(starElement, apunteId) {
+    const rating = parseInt(starElement.dataset.value);
+    const userId = localStorage.getItem("user_id");
+     
+     console.log("Valor de la estrella:", rating);
+    
+    if (!userId) {
+        alert("Debes iniciar sesión para calificar");
+        return;
+    }
+
+    try {
+        const response = await fetch("../backend/controllers/RatingController.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id: parseInt(userId),
+                apunte_id: parseInt(apunteId),
+                rating: rating
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const container = starElement.closest(".rating");
+            actualizarInterfazRating(container, data);
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error de conexión");
+    }
+}
+
+async function cargarRatingActual(container, apunteId) {
+    const userId = localStorage.getItem("user_id");
+    
+    try {
+        const params = new URLSearchParams({
+            apunte_id: apunteId,
+            user_id: userId || ''
+        });
+        
+        const response = await fetch(`../backend/controllers/RatingController.php?${params}`);
+
+        const data = await response.json();
+        
+        if (data.success) {
+            actualizarInterfazRating(container, data);
+        }
+    } catch (error) {
+        console.error("Error al cargar rating:", error);
+    }
+}
+
+function actualizarInterfazRating(container, data) {
+    const average = parseFloat(data.average) || 0;
+    const voteCount = parseInt(data.vote_count) || 0;
+    const userRating = parseInt(data.user_rating) || 0;
+    
+    // Guardar datos en el container
+    container.dataset.average = average;
+    container.dataset.userRating = userRating;
+    container.dataset.voteCount = voteCount;
+    
+    // Actualizar estrellas
+    restaurarEstrellas(container);
+    
+    // Actualizar texto
+    const avgText = container.querySelector(".avg-text");
+    if (avgText) {
+        avgText.textContent = `(${average.toFixed(1)} ⭐ — ${voteCount} ${voteCount === 1 ? 'voto' : 'votos'})`;
+    }
+}
+
+function resaltarEstrellasHover(container, rating) {
+    const stars = container.querySelectorAll(".star");
+    stars.forEach(star => {
+        star.classList.remove('hover');
+        const value = parseInt(star.dataset.value);
+        if (value <= rating) {
+            star.classList.add('hover');
+        }
+    });
+}
+
+function restaurarEstrellas(container) {
+    const stars = container.querySelectorAll(".star");
+    const userRating = parseInt(container.dataset.userRating) || 0;
+    const average = parseFloat(container.dataset.average) || 0;
+    
+    stars.forEach(star => {
+        star.classList.remove('active', 'user-rated', 'hover');
+        const value = parseInt(star.dataset.value);
+        
+        if (userRating > 0 && value <= userRating) {
+            star.classList.add('user-rated');
+        } else if (value <= Math.floor(average)) {
+            star.classList.add('active');
+        }
+    });
+}
+
 
     // === DROPZONE ===
     function initDropzone() {
@@ -765,6 +949,8 @@
       document.getElementById('formUpload').reset();
       document.getElementById('formMsg').style.display = 'none';
     }
+
+    
 
     // === LOGOUT ===
     function logout() {
